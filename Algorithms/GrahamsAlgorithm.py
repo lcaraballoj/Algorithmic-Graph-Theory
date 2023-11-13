@@ -1,20 +1,21 @@
 # GYO algorithm (Graham's algorithm) is an algorithm that finds if a hypergraph is alpha-acyclic or not
 def GYO(hypergraph, ORIGINAL):
-    print("Original: ", ORIGINAL)
+    #print("Original: ", ORIGINAL)
 
     verticesEdges = []
     for edges, vertices in hypergraph.items():
         verticesEdges.append(vertices)
 
     # Run elimination and then reduction with hypergraph from elimination function
-    newHypergraph = elimination(hypergraph, verticesEdges)
-    print("New: ", newHypergraph)
+    elimination(hypergraph, verticesEdges)
 
     # Recursion
-    if bool(hypergraph) == False: 
-        print("Alpha acyclic")
-    elif ORIGINAL == newHypergraph:
-        print("Not Alpha acyclic")
+    # if bool(hypergraph) == False: 
+    #     #print("Alpha acyclic")
+    #     return bool(hypergraph)
+    if ORIGINAL == hypergraph:
+        #print("Not Alpha acyclic")
+        return bool(hypergraph)
     else:
         GYO(hypergraph, hypergraph)
 
@@ -28,13 +29,18 @@ def elimination(hypergraph, verticesEdges):
     nodes = [] 
     for i in range(0, len(verticesEdges)):
         nodes = list(set(verticesEdges[i] + nodes))
+    
+    #print("Nodes: ", nodes)
 
     # Start elimination of vertices that appear only in one edge
     for i in range(0, len(nodes)):
         vertex = nodes[i]
+        #print("Vertex: ", vertex)
         for edges, vertices in hypergraph.items():
             if vertex in vertices:
                 count += 1
+        
+        #print("Count: ", count)
 
         if count == 1:
             for edges, vertices in hypergraph.items():
@@ -87,70 +93,4 @@ def deleteEdge(hypergraph, vertexEdge):
 #     print(verticesEdges)
 
 #     return verticesEdges
-
-# Test hypergraph
-def hyper_graph():
-    # Define a hypergraph
-    hypergraph = {
-        "e1": [1, 2, 3, 4, 5],
-        "e2": [4, 5, 6, 7, 8, 9, 10],
-        "e3": [4, 5, 6, 11, 12, 13, 17],
-        "e4": [9, 10, 14, 15, 16, 18],
-        "e5": [15, 16, 18]
-    }
-   
-    # # Print the hypergraph
-    # print("Original Hypergraph:")
-    # for edge, vertices in hypergraph.items():
-    #     print(f"{edge}: {vertices}")
-
-    return hypergraph
-
-# Example of an alpha acyclic hypergraph
-def alphaCyclic():
-    # Define a hypergraph
-    hypergraph = {
-        "e1": [1, 2, 3],
-        "e2": [1, 2],
-        "e3": [1, 3],
-        "e4": [2, 3]
-    }
-   
-    # # Print the hypergraph
-    # print("Original Hypergraph:")
-    # for edge, vertices in hypergraph.items():
-    #     print(f"{edge}: {vertices}")
-
-    return hypergraph
-
-# Hypergaph with one edge, alpha acyclic
-def test():
-    hypergraph = {
-        "e1": [1, 2, 3]
-    }
-
-    # # Print the hypergraph
-    # print("Original Hypergraph:")
-    # for edge, vertices in hypergraph.items():
-    #     print(f"{edge}: {vertices}")
-
-    return hypergraph
-
-# Square conformal graph, not alpha acyclic
-def square_conformal():
-    hypergraph = {
-        "e1": [1, 2],
-        "e2": [1, 3],
-        "e3": [2, 4],
-        "e4": [3, 4]
-    }
-
-    # # Print the hypergraph
-    # print("Original Hypergraph:")
-    # for edge, vertices in hypergraph.items():
-    #     print(f"{edge}: {vertices}")
-
-    return hypergraph
-
-GYO(hyper_graph(), hyper_graph())
 
