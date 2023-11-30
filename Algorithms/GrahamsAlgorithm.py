@@ -93,4 +93,3 @@ def deleteEdge(hypergraph, vertexEdge):
 #     print(verticesEdges)
 
 #     return verticesEdges
-

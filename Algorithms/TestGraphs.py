@@ -62,6 +62,16 @@ def square_conformal():
 
     return hypergraph
 
+# Gamma Triangle
+def gammaTriangle():
+    hypergraph = {
+        "e1": [1, 2, 3],
+        "e2": [1, 2],
+        "e3": [1, 3]
+    }
+
+    return hypergraph
+
 # Triangle Graph
 def triangle():
     hypergraph = {
@@ -81,4 +91,25 @@ def tetraedron():
         "e4": [2, 3]
     }
 
+    return hypergraph
+
+# Alpha Acyclic
+def alphaAcyclic():
+    hypergraph = {
+        "e1": [1, 2, 3, 4],
+        "e2": [5, 6, 3, 7],
+        "e3": [7, 8, 9, 10],
+        "e4": [3, 4, 7]
+    }
+
+    return hypergraph
+
+# Beta Acyclic
+def betaAcyclic():
+    hypergraph = {
+        "e1": [1, 2, 3],
+        "e2": [3, 4, 5],
+        "e3": [2, 3, 5, 6, 7]
+    }
+    
     return hypergraph
