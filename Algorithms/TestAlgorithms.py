@@ -22,11 +22,11 @@ ans = [] # Array for the answer
 #         ans.append(False)
 
 
-i=3
+i=7
 
 print(graphs[i]()) # Print hypergraph
 # Check if graphs is alpha-acyclic, False means that it is empty which correleates to alpha acyclicity
-if bool(GYO(graphs[i](), graphs[i]())) == False:
+if bool(GYO(graphs[i]())) == False:
     print("Alpha acyclic")
     ans.append(True)
 else:
