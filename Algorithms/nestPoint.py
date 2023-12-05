@@ -7,7 +7,7 @@ def nestPoints(H):
     verticesEdges = []
     for edges, vertices in H.items():
         verticesEdges.append(vertices)
-    print(verticesEdges)
+    print("Vertices Edges: ", verticesEdges)
         
     # List of vertices
     nodes = [] 
@@ -18,25 +18,28 @@ def nestPoints(H):
 
     listOfEdges = []
     edgeLength = {}
+    nestPoints = []
 
     # Check nest point
     for i in range(0, len(nodes)):
         print(nodes[i])
         for j in range(0, len(verticesEdges)):
             if nodes[i] in verticesEdges[j]:
-                listOfEdges.append(verticesEdges[j])
+                #listOfEdges.append(verticesEdges[j])
                 edgeLength[j] = len(verticesEdges[j])
-        print("List of Edges: ", listOfEdges)
-        print("Edge Dict: ", edgeLength)
-        print("Sorted: ", merge_sort(edgeLength))
 
-        # sort = mergeSort(edgeLength)
-        # print("Unsrt: ", edgeLength)
-        # print("Srt:", sort)
-        # if len(edgeLength) == len(sort):
-        #     print("Same length!")
-        listOfEdges = []
+        #print("List of Edges: ", listOfEdges)
+        # print("Edge Dict: ", edgeLength)
+        # print("Sorted: ", merge_sort(edgeLength))
+
+        sort = merge_sort(edgeLength)
+        print("Unsrt: ", edgeLength)
+        print("Srt:", sort)
+        if len(edgeLength) == len(sort):
+            nestPoints.append(nodes[i])
         edgeLength = {}
+        
+    print(nestPoints)
 
 def merge_sort(dictionary):
                      # base case
@@ -115,8 +118,25 @@ def merge(left_half, right_half):
     
 #     return output
 
-# def checkNested(arr):
+def checkNested(dict, listEdges):
+    #print("List of Edges:", listEdges)
+    dictKeys = list(dict.keys())
+    edgeIndex = []
 
+    # Get list of indexes
+    for i in range(0, len(dictKeys)):
+        edgeIndex.append(dictKeys[i])
+
+    if len(edgeIndex)!= 2:
+        for i in range(0,len(edgeIndex)-2):
+            print(listEdges[edgeIndex[i]])
+            print(listEdges[edgeIndex[i+1]])
+
+            if set(listEdges[edgeIndex[i]]) <= set(listEdges[edgeIndex[i+1]]):
+                print("Nested")
+    else: 
+        if set(listEdges[edgeIndex[0]]) <= set(listEdges[edgeIndex[1]]):
+            print("Nested")
 
 def gammaTriangle():
     hypergraph = {
