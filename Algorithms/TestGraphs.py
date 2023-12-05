@@ -109,7 +109,7 @@ def betaAcyclic():
     hypergraph = {
         "e1": [1, 2, 3],
         "e2": [3, 4, 5],
-        "e3": [2, 3, 5, 6, 7]3
+        "e3": [2, 3, 5, 6, 7]
     }
     
     return hypergraph
