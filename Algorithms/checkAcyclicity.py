@@ -1,6 +1,5 @@
 # -------
-# Testing the GYO algorithm 
-# The GYO algorithm detects whether or not a graph is aplpha-acyclic
+# Choose which type of acyclciity to use and check it
 # -------
 
 import pandas as pd
@@ -8,14 +7,18 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import networkx as nx
 import hypernetx as hnx
-import pydot
 from networkx.drawing.nx_pydot import graphviz_layout
-from cycler import cycler
 
 # Import GYO algorithm
-from GrahamsAlgorithm import GYO
+from grahamsAlgorithm import GYO
+# Import betaAcyclic algorithm
+from betaAcyclic import checkBetaAcyclic
 # Import test graphs
-from TestGraphs import *
+from testGraphs import *
+
+# Choose type of acyclicity
+print("What type of acyclicity: \n 1: Alpha \n 2: Beta")
+acyclicity = int(input())
 
 # Get number of hyperedges
 print("How many hyperedges?")
@@ -51,9 +54,9 @@ hnx.drawing.draw(hypergraph,
 print(H)
 
 # Check if graph is alpha-acyclic, False means that it is empty which correleates to alpha acyclicity
-if bool(GYO(H)) == False:
-    print("Alpha acyclic")
-else:
-    print("Not alpha acyclic")
+if acyclicity == 1:
+    GYO(H)
+else: 
+    checkBetaAcyclic(H)
 
 plt.show()

@@ -1,13 +1,13 @@
+# --------
 # GYO algorithm (Graham's algorithm) is an algorithm that finds if a hypergraph is alpha-acyclic or not
+# --------
+
+
 def GYO(hypergraph):
     ORIGINAL = hypergraph.copy()
 
-    verticesEdges = []
-    for edges, vertices in hypergraph.items():
-        verticesEdges.append(vertices)
-
     # Run elimination and then reduction with hypergraph from elimination function
-    elimination(hypergraph, verticesEdges)
+    elimination(hypergraph)
 
     print(ORIGINAL)
     print(hypergraph)
@@ -17,16 +17,22 @@ def GYO(hypergraph):
     #     #print("Alpha acyclic")
     #     return bool(hypergraph)
     if ORIGINAL == hypergraph:
-        #print("Not Alpha acyclic")
-        return bool(hypergraph)
+        if bool(GYO(hypergraph)) == False:
+            print("Alpha acyclic")
+        else:
+            print("Not alpha acyclic")
     else:
         GYO(hypergraph)
 
-
 # Elimination
-def elimination(hypergraph, verticesEdges):
+def elimination(hypergraph):
     # Set count
     count = 0
+
+    verticesEdges = []
+    for edges, vertices in hypergraph.items():
+        verticesEdges.append(vertices)
+
 
     # List of vertices
     nodes = [] 
@@ -36,16 +42,14 @@ def elimination(hypergraph, verticesEdges):
     #print("Nodes: ", nodes)
 
     # Start elimination of vertices that appear only in one edge
+    # Loop through nodes
     for i in range(0, len(nodes)):
         vertex = nodes[i]
-        #print("Vertex: ", vertex)
+        # Loop through hypergraph items
         for edges, vertices in hypergraph.items():
-            if vertex in vertices:
+            if vertex in vertices: # Check if vertex is in edge vertices
                 count += 1
-        
-        #print("Count: ", count)
-
-        if count == 1:
+        if count == 1: # If vertex appears only once in an edge then remove it
             for edges, vertices in hypergraph.items():
                 if vertex in vertices:
                     vertices.remove(vertex)
