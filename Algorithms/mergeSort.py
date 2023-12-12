@@ -16,36 +16,30 @@ def mergeSortDict(dictionary):
             left_half[key] = dictionary[key]     # forming the left half dictionary
         else:
             right_half[key] = dictionary[key]    # forming the right half dictionary
-    # print("Left: ", left_half)
-    # print("Right: ", right_half)
  
     left_half = mergeSortDict(left_half)            # recursive call for the left half
     right_half = mergeSortDict(right_half)          # recursive call for the right half
  
-    return mergeDict(left_half, right_half)          # merging the two sorted halves\
+    return mergeDict(left_half, right_half)          # merging the two sorted halves
 
 def mergeDict(left_half, right_half):
     result = {}
     left_keys = list(left_half.keys())
-    left_values = list(left_half.values())
     right_keys = list(right_half.keys())
-    right_values = list(right_half.values())
-
     i = 0
     j = 0
-
-    while i < len(left_values) and j < len(right_values):
-        if left_values[i] < right_values[j]:         # executed if the left half has the lower element
-            result[left_keys[left_values.index(left_values[i])]] = left_values[i]
+    while i < len(left_keys) and j < len(right_keys):
+        if left_keys[i] < right_keys[j]:         # executed if the left half has the lower element
+            result[left_keys[i]] = left_half[left_keys[i]]
             i += 1
         else:                                    # executed if the right half has the lower element
-            result[right_keys[right_values.index(right_values[j])]] = right_values[j]
+            result[right_keys[j]] = right_half[right_keys[j]]
             j += 1
-    while i < len(left_values):                    # adding remaining elements of left half
-        result[left_keys[left_values.index(left_values[i])]] = left_values[i]
+    while i < len(left_keys):                    # adding remaining elements of left half
+        result[left_keys[i]] = left_half[left_keys[i]]
         i += 1
-    while j < len(right_values):                   # adding remaining elements of right half
-        result[right_keys[right_values.index(right_values[j])]] = right_values[j]
+    while j < len(right_keys):                   # adding remaining elements of right half
+        result[right_keys[j]] = right_half[right_keys[j]]
         j += 1
     return result
 
@@ -79,3 +73,5 @@ def merge(left, right):
         output.extend(right[j:])
     
     return output
+
+print(mergeSortDict({'e1': ['1', '2'], 'e2':['1', '3'], 'e3':['1', '2', '3']}))

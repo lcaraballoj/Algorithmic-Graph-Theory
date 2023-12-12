@@ -1,8 +1,4 @@
-# --------
 # GYO algorithm (Graham's algorithm) is an algorithm that finds if a hypergraph is alpha-acyclic or not
-# --------
-
-
 def GYO(hypergraph):
     ORIGINAL = hypergraph.copy()
 
@@ -17,12 +13,14 @@ def GYO(hypergraph):
     #     #print("Alpha acyclic")
     #     return bool(hypergraph)
     if ORIGINAL == hypergraph:
-        if bool(GYO(hypergraph)) == False:
-            print("Alpha acyclic")
-        else:
+        #print("Not Alpha acyclic")
+        if bool(hypergraph) == False:
+            print("Alpha Acyclic")
+        else: 
             print("Not alpha acyclic")
     else:
         GYO(hypergraph)
+
 
 # Elimination
 def elimination(hypergraph):
@@ -33,7 +31,6 @@ def elimination(hypergraph):
     for edges, vertices in hypergraph.items():
         verticesEdges.append(vertices)
 
-
     # List of vertices
     nodes = [] 
     for i in range(0, len(verticesEdges)):
@@ -42,14 +39,16 @@ def elimination(hypergraph):
     #print("Nodes: ", nodes)
 
     # Start elimination of vertices that appear only in one edge
-    # Loop through nodes
     for i in range(0, len(nodes)):
         vertex = nodes[i]
-        # Loop through hypergraph items
+        #print("Vertex: ", vertex)
         for edges, vertices in hypergraph.items():
-            if vertex in vertices: # Check if vertex is in edge vertices
+            if vertex in vertices:
                 count += 1
-        if count == 1: # If vertex appears only once in an edge then remove it
+        
+        #print("Count: ", count)
+
+        if count == 1:
             for edges, vertices in hypergraph.items():
                 if vertex in vertices:
                     vertices.remove(vertex)
