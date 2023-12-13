@@ -5,8 +5,8 @@ def GYO(hypergraph):
     # Run elimination and then reduction with hypergraph from elimination function
     elimination(hypergraph)
 
-    print(ORIGINAL)
-    print(hypergraph)
+    #print(ORIGINAL)
+    #print(hypergraph)
 
     # Recursion
     # if bool(hypergraph) == False: 
@@ -55,9 +55,9 @@ def elimination(hypergraph):
 
         count = 0
 
-    print("Elimination:")
-    for edge, vertices in hypergraph.items():
-        print(f"{edge}: {vertices}")
+    # print("Elimination:")
+    # for edge, vertices in hypergraph.items():
+    #     print(f"{edge}: {vertices}")
 
     verticesEdges = []
     for edges, vertices in hypergraph.items():
@@ -75,10 +75,10 @@ def reduction(hypergraph, verticesEdges):
             elif not verticesEdges[i]:
                 deleteEdge(hypergraph, verticesEdges[i])
 
-    # Print new hypergraph
-    print("Reduction:")
-    for edge, vertices in hypergraph.items():
-        print(f"{edge}: {vertices}")
+    # # Print new hypergraph
+    # print("Reduction:")
+    # for edge, vertices in hypergraph.items():
+    #     print(f"{edge}: {vertices}")
 
     return hypergraph
 
