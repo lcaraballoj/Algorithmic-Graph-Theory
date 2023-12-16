@@ -73,5 +73,3 @@ def merge(left, right):
         output.extend(right[j:])
     
     return output
-
-print(mergeSortDict({'e1': ['1', '2'], 'e2':['1', '3'], 'e3':['1', '2', '3']}))

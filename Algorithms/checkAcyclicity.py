@@ -55,8 +55,10 @@ print(H)
 
 # Check if graph is alpha-acyclic, False means that it is empty which correleates to alpha acyclicity
 if acyclicity == 1:
-    GYO(H)
+    result = GYO(H)
 else: 
-    checkBetaAcyclic(H)
+    result = checkBetaAcyclic(H)
+
+print(result)
 
 plt.show()

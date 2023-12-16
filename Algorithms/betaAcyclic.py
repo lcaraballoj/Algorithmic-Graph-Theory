@@ -6,6 +6,8 @@
 # 4. Repeat until hypergraph is empty or is unchanged
 # --------
 
+import copy
+
 # Import merge sort and graphs
 from mergeSort import mergeSortDict
 from testGraphs import *
@@ -13,25 +15,27 @@ from testGraphs import *
 # Check if beta acyclic
 def checkBetaAcyclic(hypergraph):
     #print("\nHYPERGRAPH: ", hypergraph)
-    ORIGINAL = hypergraph.copy()
-    #print("\nMODIFYING: ", ORIGINAL)
+    ORIGINAL = copy.deepcopy(hypergraph)
+    # print("\nMODIFYING: ", ORIGINAL)
 
     elimination(hypergraph)
-    
-    #print("ORG: ", ORIGINAL)
-    #print("NEW: ", hypergraph)
 
-    if ORIGINAL == hypergraph:
-        if bool(hypergraph) ==  False:
-            print("Beta Acyclic")
-        else: 
-            print("Not Beta Acyclic")
+    findNestPoint(hypergraph)
+    
+    # print("ORG: ", ORIGINAL)
+    # print("NEW: ", hypergraph)
+
+    if bool(hypergraph) == False:
+        # print("Beta Acyclic")
+        return True
+    elif ORIGINAL == hypergraph:
+        # print("Not Beta Acyclic")
+        return False 
     else:
-        checkBetaAcyclic(hypergraph)
+        return checkBetaAcyclic(hypergraph)
 
 # Delete vertices that exist only in one edge
 def elimination(hypergraph):
-    #print("Remove vertices that exist in only one hyperedge")
     # Set count
     count = 0
 
@@ -43,35 +47,38 @@ def elimination(hypergraph):
     nodes = [] 
     for i in range(0, len(verticesEdges)):
         nodes = list(set(verticesEdges[i] + nodes))
+    
+    #print("Nodes: ", nodes)
 
     # Start elimination of vertices that appear only in one edge
-    # Loop through nodes
     for i in range(0, len(nodes)):
         vertex = nodes[i]
-        # Loop through hypergraph items
+        # print("Vertex: ", vertex)
         for edges, vertices in hypergraph.items():
-            if vertex in vertices: # Check if vertex is in edge vertices
+            if vertex in vertices:
                 count += 1
-        if count == 1: # If vertex appears only once in an edge then remove it
+        
+        #print("Count: ", count)
+
+        if count == 1:
             for edges, vertices in hypergraph.items():
                 if vertex in vertices:
-                    #print("REMOVE: ", vertex)
                     vertices.remove(vertex)
 
         count = 0
 
-    findNestPoint(hypergraph)
+    return hypergraph
 
 # Find the nest points
 def findNestPoint(hypergraph):
-    print("\nFINDING NEST POINTS")
-    nestPoints = []
+    # print("\nFINDING NEST POINTS")
+    #nestPoints = []
     verticesEdges = []
     
     for edges, vertices in hypergraph.items():
         verticesEdges.append(vertices)
         
-    #print("Vertices Edges: ", verticesEdges)
+    # print("Vertices Edges: ", verticesEdges)
         
     # List of vertices
     nodes = [] 
@@ -89,24 +96,23 @@ def findNestPoint(hypergraph):
                 #listOfEdges.append(verticesEdges[j])
                 #print("Node in: ", verticesEdges[j])
                 edgeLength[j] = len(verticesEdges[j])
-        #print("Edge Dict: ", edgeLength)
-        # print("Sorted: ", merge_sort(edgeLength))
 
         sort = mergeSortDict(edgeLength)
 
-        #print("Unsrt: ", edgeLength)
-        #print("Srt:", sort)
+        # print("Unsrt: ", edgeLength)
+        # print("Srt:", sort)
 
         # If node is a nest point then remove it from H
         if checkNested(sort, verticesEdges) == True:
-            print("REMOVE: ", nodes[i])
-            nestPoints.append(nodes[i])
+            # print("REMOVE: ", nodes[i])
+
             # Remove vertex
             for edges, vertices in hypergraph.items():
                 if nodes[i] in vertices:
                     vertices.remove(nodes[i])
+            break
 
-    #print("Nest Points: ", nestPoints)
+    # print("Nest Points: ", nodes[i])
 
     deleteEmptyEdge(hypergraph)
 
@@ -114,9 +120,9 @@ def findNestPoint(hypergraph):
 def checkNested(dict, listEdges):
     count = 0 # Keept track of nested
 
-    #print("List of Edges:", listEdges)
+    # print("List of Edges:", listEdges)
     dictKeys = list(dict.keys())
-   # print("Dictionary Keys: ", dictKeys)
+    # print("Dictionary Keys: ", dictKeys)
     edgeIndex = []
 
     # Get list of indexes
@@ -126,12 +132,12 @@ def checkNested(dict, listEdges):
     #print("EDGE INDEX: ", edgeIndex)
 
     for i in range(len(dictKeys)-1):
-        #print("Current: ", listEdges[edgeIndex[i]])
-        #print("Next: ", listEdges[edgeIndex[i+1]])
+        # print("Current: ", listEdges[edgeIndex[i]])
+        # print("Next: ", listEdges[edgeIndex[i+1]])
         if set(listEdges[edgeIndex[i]]) <= set(listEdges[edgeIndex[i+1]]):
         #if edgeIndex[i].issubset(edgeIndex[i+1]):
             count += 1
-            #print("COUNT: ", count)
+            # print("COUNT: ", count)
     if count == (len(edgeIndex) - 1):
         return True
     else: 
@@ -139,32 +145,9 @@ def checkNested(dict, listEdges):
 
 # Check if edge is empty
 def deleteEmptyEdge(hypergraph):
-    #print("Remove empty edges")
+    # print("Remove empty edges")
     for edges, vertices in dict(hypergraph).items():
         if len(vertices) == 0:
             del hypergraph[edges]
 
     return hypergraph
-
-# def test():
-#     hypergraph = {
-#         "e1": [1,2,3],
-#         "e2": [3,4,5],
-#         "e3": [2,3,4,6,7]
-#     }
-
-#     return hypergraph
-
-#checkBetaAcyclic(test())
-
-# def emptyHypergraph():
-#     hypergraph = {
-#         "e1": [1,2,3],
-#         "e2": [2,4,5],
-#         "e3": [5,6],
-#         "e4": []
-#     }
-
-#     return hypergraph
-
-#print(deleteEmptyEdge(emptyHypergraph()))
