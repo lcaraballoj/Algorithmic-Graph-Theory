@@ -29,6 +29,7 @@ def generate_random_hypergraph(numVertices, numHyperedges, minVertices, maxVerti
 
     return hyperedges
 
+# Remove duplicate hypergraph
 def remove_outer_duplicates(list_of_lists_of_lists):
     seen = set()
     unique_elements = []

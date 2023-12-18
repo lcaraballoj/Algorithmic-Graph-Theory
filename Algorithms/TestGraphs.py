@@ -113,3 +113,13 @@ def betaAcyclic():
     }
     
     return hypergraph
+
+def betaTraingle():
+    hypergraph = {
+        'e1': [1,2,3],
+        'e2': [1,2],
+        'e3': [1,3],
+        'e4': [2,3]
+    }
+
+    return hypergraph
