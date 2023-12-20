@@ -186,30 +186,30 @@ df['dualGraph'] = df['dualGraph'].apply(json.dumps)
 kDf['hypergraph'] = listDict
 kDf['hypergraph'] = kDf['hypergraph'].apply(json.dumps)
 
-# --------
-# Add dataframes to mysql database
+# # --------
+# # Add dataframes to mysql database
 
-# Database connection information
-DB_USERNAME = 'root'
-DB_PASSWORD = 'Acd2023='
-DB_HOST = 'localhost'
-DB_NAME = 'hypergraphs'
+# # Database connection information
+# DB_USERNAME = 'root'
+# DB_PASSWORD = # Password
+# DB_HOST = 'localhost'
+# DB_NAME = 'hypergraphs'
 
-# Connect to the MySQL database
-conn = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USERNAME,
-    passwd=DB_PASSWORD,
-    database=DB_NAME
-)
+# # Connect to the MySQL database
+# conn = mysql.connector.connect(
+#     host=DB_HOST,
+#     user=DB_USERNAME,
+#     passwd=DB_PASSWORD,
+#     database=DB_NAME
+# )
 
-# Create a SQLAlchemy engine
-engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
+# # Create a SQLAlchemy engine
+# engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
-# Insert DataFrame into hypergraph table
-df.to_sql('hypergraph', con=engine, if_exists='append', index=False)
+# # Insert DataFrame into hypergraph table
+# df.to_sql('hypergraph', con=engine, if_exists='append', index=False)
 
-kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
+# kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
 
-# Close the MySQL connection
-conn.close()
+# # Close the MySQL connection
+# conn.close()

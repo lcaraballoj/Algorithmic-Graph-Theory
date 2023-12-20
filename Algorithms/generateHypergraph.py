@@ -7,25 +7,39 @@ from testGraphs import *
 from betaAcyclic import checkBetaAcyclic
 from grahamsAlgorithm import GYO
 
-def generate_random_hypergraph(numVertices, numHyperedges, minVertices, maxVertices):
-    if numVertices <= 0 or numHyperedges <= 0 or maxVertices <= 0:
+def generate_random_hypergraph(numVertices, numHyperedges, edgeSize):
+    if numVertices <= 0 or numHyperedges <= 0 or len(edgeSize) != numHyperedges:
         raise ValueError("Inputs must be positive integers")
 
     vertices = set(range(1, numVertices + 1))
     hyperedges = []
 
-    for j in range(numHyperedges):
-        count = 0
-        # Generate a random hyperedge with random vertices
-        numVertices = random.randint(minVertices, maxVertices)
-        verticesInEdge = random.sample(vertices, numVertices)
+    for size in edgeSize:
+        verticesInEdge = random.sample(vertices, size)
+        hyperedges.append(verticesInEdge)
 
-        for i in range (len(hyperedges)):
-            if set(verticesInEdge) != set(hyperedges[i]):
-                count += 1
-        
-        if count == len(hyperedges):
-            hyperedges.append(verticesInEdge)
+    return hyperedges
+
+import random
+
+def generate_specific_hypergraph(numVertices, numHyperedges, edgeSizes):
+    if numVertices <= 0 or numHyperedges <= 0 or sum(edgeSizes) != numVertices:
+        raise ValueError("Invalid inputs")
+
+    vertices = set(range(1, numVertices + 1))
+    hyperedges = []
+
+    for size in edgeSizes:
+        if size > len(vertices):
+            raise ValueError("Edge size exceeds available vertices")
+
+        verticesInEdge = random.sample(vertices, size)
+        hyperedges.append(verticesInEdge)
+        vertices.difference_update(verticesInEdge)
+
+    # Check if the hypergraph has the desired number of hyperedges
+    if len(hyperedges) != numHyperedges:
+        raise ValueError("Could not generate specified number of hyperedges")
 
     return hyperedges
 
