@@ -86,6 +86,11 @@ for i in range(len(sortedList)):
 checkHypergraphs = copy.deepcopy(listDict) # Copy to retain original dictionary
 vertices = []
 hyperedges = []
+numHyperedges6 = []
+numHyperedges5 = []
+numHyperedges4 = []
+numHyperedges3 = []
+numHyperedges2 = []
 hyperedgeAllVertices = []
 alpha = []
 beta = []
