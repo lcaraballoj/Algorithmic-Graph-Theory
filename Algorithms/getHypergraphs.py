@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 # Establish a connection to your MySQL database
 # Database connection information
 DB_USERNAME = 'root'
-DB_PASSWORD = # Password
+DB_PASSWORD = 'password'
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 

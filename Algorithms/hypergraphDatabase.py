@@ -8,6 +8,7 @@ import networkx as nx
 import pandas as pd
 import mysql.connector
 
+from collections import Counter
 from testGraphs import *
 from sqlalchemy import create_engine
 from betaAcyclic import checkBetaAcyclic
@@ -21,10 +22,9 @@ df = pd.DataFrame()
 kDf = pd.DataFrame()
 
 # Specify parameters to generate hypergraphs
-num_vertices = 6
-min_vertices = 2
-num_hyperedges = 4
-max_vertices_per_edge = num_vertices
+numVertices = 6
+numHyperedges = 5
+edgeSizes = [6,3,3,2,2]
 
 # Hypergraphs that have already been tested
 hypergraphs = [
@@ -53,15 +53,15 @@ hypergraphs = [
 ]
 
 # Generate random hypergraphs
-for i in range(100):
-    random_hypergraph = generate_random_hypergraph(num_vertices, num_hyperedges, min_vertices, max_vertices_per_edge)
+for i in range(20):
+    random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
     hypergraphs.append(random_hypergraph)
 
 # Get rid of any duplicate hypergraphs
 noDup = remove_outer_duplicates(hypergraphs)
 
 # Get rid of hypergraphs that do not have the number of hyperedges specified
-cleanList = [x for x in noDup if len(x)==num_hyperedges]
+cleanList = [x for x in noDup if len(x)== numHyperedges]
 
 # Short the vertices in each hyperedge of each hypergraph
 sortedList = [
@@ -86,12 +86,7 @@ for i in range(len(sortedList)):
 checkHypergraphs = copy.deepcopy(listDict) # Copy to retain original dictionary
 vertices = []
 hyperedges = []
-numHyperedges6 = []
-numHyperedges5 = []
-numHyperedges4 = []
-numHyperedges3 = []
-numHyperedges2 = []
-hyperedgeAllVertices = []
+sizeOfEdges = []
 alpha = []
 beta = []
 chordal = []
@@ -111,16 +106,17 @@ for i in range(len(listDict)):
     # Get number of vertices and edge
     vertices.append(H.number_of_nodes())
     hyperedges.append(H.number_of_edges())
+    sizeOfEdges.append(edgeSizes)
 
-    # See if there is a hyperedge with all vertices
-    count = 0
-    for hyperedge in H.edges:
-        if set(H.edges[hyperedge]) == set(H.nodes()):
-            count += 1
-    if count >= 1:
-        hyperedgeAllVertices.append(True)
-    else:
-        hyperedgeAllVertices.append(False)
+    # # See if there is a hyperedge with all vertices
+    # count = 0
+    # for hyperedge in H.edges:
+    #     if set(H.edges[hyperedge]) == set(H.nodes()):
+    #         count += 1
+    # if count >= 1:
+    #     hyperedgeAllVertices.append(True)
+    # else:
+        # hyperedgeAllVertices.append(False)
 
     # Get line graph
     G = H.get_linegraph()
@@ -129,7 +125,7 @@ for i in range(len(listDict)):
     reg = nx.is_regular(G)
     regular.append(nx.is_regular(G))
     # Check if line graph is a complete graph (every vertex should have degree of the # vertices - 1)
-    if reg == True and G.degree['e0'] == (num_hyperedges - 1):
+    if reg == True and G.degree['e0'] == (numHyperedges - 1):
         complete.append(True)
     else:
         complete.append(False)
@@ -163,7 +159,7 @@ for i in range(len(listDict)):
 df['hypergraph'] = listDict
 df['numVertices'] = vertices
 df['numEdges'] = hyperedges
-df['hyperedgeAllVertices'] = hyperedgeAllVertices
+df['edgeSizes'] = sizeOfEdges 
 df['alpha'] = alpha
 df['beta'] = beta
 df['lineGraphChordal'] = chordal
