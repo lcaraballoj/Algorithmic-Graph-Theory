@@ -20,33 +20,22 @@ def generate_random_hypergraph(numVertices, numHyperedges, edgeSize):
 
     return hyperedges
 
-import random
+# Check if hypergraph is connected
+def is_connected(hyperedges, numVertices):
+    # Create a set containing all vertices
+    all_vertices = set(range(1, numVertices + 1))
 
-def generate_specific_hypergraph(numVertices, numHyperedges, edgeSizes):
-    if numVertices <= 0 or numHyperedges <= 0 or sum(edgeSizes) != numVertices:
-        raise ValueError("Invalid inputs")
+    # Traverse hyperedges and merge vertices to find connected components
+    connected_vertices = set()
+    for edge in hyperedges:
+        connected_vertices.update(edge)
 
-    vertices = set(range(1, numVertices + 1))
-    hyperedges = []
-
-    for size in edgeSizes:
-        if size > len(vertices):
-            raise ValueError("Edge size exceeds available vertices")
-
-        verticesInEdge = random.sample(vertices, size)
-        hyperedges.append(verticesInEdge)
-        vertices.difference_update(verticesInEdge)
-
-    # Check if the hypergraph has the desired number of hyperedges
-    if len(hyperedges) != numHyperedges:
-        raise ValueError("Could not generate specified number of hyperedges")
-
-    return hyperedges
+    return connected_vertices == all_vertices
 
 # Remove duplicate hypergraph
 def remove_outer_duplicates(list_of_lists_of_lists):
     seen = set()
-    unique_elements = []
+    uniqueHypergraphs = []
 
     for element in list_of_lists_of_lists:
         # Convert inner lists to sets to disregard the order of elements
@@ -54,47 +43,22 @@ def remove_outer_duplicates(list_of_lists_of_lists):
 
         # Check if the set representation of the element is already seen
         if tuple(element_sets) not in seen:
-            unique_elements.append(element)
+            uniqueHypergraphs.append(element)
             seen.add(tuple(element_sets))
 
-    return unique_elements
+    return remove_duplicate_edge(uniqueHypergraphs)
 
-# # Example usage:
-# num_vertices = 6
-# min_vertices = 2
-# num_hyperedges = 5
-# max_vertices_per_edge = 5
+# Remove hypergraphs where there is an edge repeated
+def remove_duplicate_edge(listHypergraphs):
+    unique = []
 
-# hypergraphs = []
+    for sublist in listHypergraphs:
+        # Convert each sublist to a set to remove duplicate elements
+        unique_sublist = [list(set(inner_list)) for inner_list in sublist]
 
-# for i in range(30):
-#     random_hypergraph = generate_random_hypergraph(num_vertices, num_hyperedges, min_vertices, max_vertices_per_edge)
-#     hypergraphs.append(random_hypergraph)
+        # Check if there are any duplicates in the sublist
+        if len(unique_sublist) == len(set(tuple(sub) for sub in unique_sublist)):
+            # Add the unique sublist to the result
+            unique.append(sublist)
 
-# # print('Hypergraph: ', *hypergraphs, sep='\n')
-
-# noDup = remove_outer_duplicates(hypergraphs)
-
-# cleanList = [x for x in noDup if len(x)==num_hyperedges]
-
-# listDict = []
-
-# for i in range(len(cleanList)):
-#     hypergraphDict = {}
-#     for j in range(len(cleanList[i])):
-#         hypergraphDict['e{}'.format(j)] = cleanList[i][j]
-
-#     listDict.append(hypergraphDict)
-
-# # Check Acyclicity 
-    
-# alpha = []
-# beta = []
-# for i in range(len(listDict)):
-#     hypergraph = copy.deepcopy(listDict[i])
-#     alpha.append(GYO(listDict[i]))
-#     beta.append(checkBetaAcyclic(hypergraph))
-
-
-# print(alpha)
-# print(beta)
+    return unique
