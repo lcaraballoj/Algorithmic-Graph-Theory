@@ -1,5 +1,5 @@
 # --------
-# This code generates randome hypergraphs given specific parameters and then inputs them into a mysql database table
+# This code generates random hypergraphs given specific parameters and then inputs them into a mysql database table
 # --------
 
 import copy, json
@@ -23,8 +23,8 @@ kDf = pd.DataFrame()
 
 # Specify parameters to generate hypergraphs
 numVertices = 6
-numHyperedges = 2
-edgeSizes = [6,2]
+numHyperedges = 3
+edgeSizes = [3,3,2]
 
 # Hypergraphs that have already been tested
 hypergraphs = [
@@ -62,7 +62,7 @@ hypergraphs = [
 ]
 
 # Generate random hypergraphs
-for i in range(100):
+for i in range(1000):
     random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
     hypergraphs.append(random_hypergraph)
 
@@ -81,7 +81,7 @@ sortedList = [
 sorted_data = [sorted(sublist, key=len, reverse=True) for sublist in sortedList]
 
 sizeOfEdges = [[len(sublist) for sublist in sublists] for sublists in sorted_data]
-stringSizeOfEdges = ["".join(map(str, sublist)) for sublist in sizeOfEdges] # Convert items to string to input into database
+stringSizeOfEdges = [str(sublist) for sublist in sizeOfEdges] # Convert items to string to input into database
 
 listDict = []
 
@@ -119,17 +119,6 @@ for i in range(len(listDict)):
     # Get number of vertices and edge
     vertices.append(H.number_of_nodes())
     hyperedges.append(H.number_of_edges())
-    # sizeOfEdges.append(edgeSizes)
-
-    # # See if there is a hyperedge with all vertices
-    # count = 0
-    # for hyperedge in H.edges:
-    #     if set(H.edges[hyperedge]) == set(H.nodes()):
-    #         count += 1
-    # if count >= 1:
-    #     hyperedgeAllVertices.append(True)
-    # else:
-        # hyperedgeAllVertices.append(False)
 
     # Get line graph
     G = H.get_linegraph()
@@ -204,30 +193,32 @@ kDf['one'] = oneNEO
 
 print(kDf)
 
-# --------
-# Add dataframes to mysql database
+kDf.to_csv('test.csv')
 
-# Database connection information
-DB_USERNAME = 'root'
-DB_PASSWORD = 'password'
-DB_HOST = 'localhost'
-DB_NAME = 'hypergraphs'
+# # --------
+# # Add dataframes to mysql database
 
-# Connect to the MySQL database
-conn = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USERNAME,
-    passwd=DB_PASSWORD,
-    database=DB_NAME
-)
+# # Database connection information
+# DB_USERNAME = 'root'
+# DB_PASSWORD = 'Acd2023='
+# DB_HOST = 'localhost'
+# DB_NAME = 'hypergraphs'
 
-# Create a SQLAlchemy engine
-engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
+# # Connect to the MySQL database
+# conn = mysql.connector.connect(
+#     host=DB_HOST,
+#     user=DB_USERNAME,
+#     passwd=DB_PASSWORD,
+#     database=DB_NAME
+# )
 
-# Insert DataFrame into hypergraph table
-df.to_sql('hypergraphSpecificEdges', con=engine, if_exists='append', index=False)
+# # Create a SQLAlchemy engine
+# engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
-kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
+# # Insert DataFrame into hypergraph table
+# df.to_sql('hypergraphSpecificEdges', con=engine, if_exists='append', index=False)
 
-# Close the MySQL connection
-conn.close()
+# kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
+
+# # Close the MySQL connection
+# conn.close()
