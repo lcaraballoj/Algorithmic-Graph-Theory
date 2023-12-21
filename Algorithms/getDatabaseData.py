@@ -42,7 +42,11 @@ print(sorted_data)
 
 df = pd.read_sql(query,connection)
 
-print(df['two'].to_list())
+dict = {'hypergraph': sorted_data, 'two': df['two']}
+
+df = pd.DataFrame(dict)
+
+df.to_csv('2NEO.csv')
 
 # Close the cursor and connection
 cursor.close()

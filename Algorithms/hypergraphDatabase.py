@@ -23,46 +23,46 @@ kDf = pd.DataFrame()
 
 # Specify parameters to generate hypergraphs
 numVertices = 6
-numHyperedges = 5
-edgeSizes = [6,3,3,2,2]
+numHyperedges = 2
+edgeSizes = [6,2]
 
 # Hypergraphs that have already been tested
 hypergraphs = [
-    [[1, 2, 3, 4, 5, 6], [2, 3, 4, 6], [2, 3, 6], [1, 5], [1, 4]], 
-    [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 6], [1, 2, 3, 5], [2, 4, 5], [1, 2, 3]], 
-    [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 2, 3, 5], [1, 3, 4], [5, 6]], 
-    [[1, 2, 3, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5, 6], [1, 2, 4], [4, 5]], 
-    [[1, 2, 3, 4, 5], [1, 5, 6], [4, 5], [3, 4]], 
-    [[1, 2, 3, 4, 5], [1, 2, 4, 5, 6], [2, 3, 6], [2, 4, 5], [3, 4]], 
-    [[1, 2, 3, 4], [1, 4, 5], [3, 4, 6], [2, 5], [3, 6]], 
-    [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 3, 5], [1, 3, 5, 6], [1, 5, 6]], 
-    [[1, 2, 4, 5, 6], [2, 3, 4, 5], [2, 3, 4, 6], [1, 2, 5], [1, 5]], 
-    [[1, 3, 5, 6], [1, 2, 4], [2, 4, 5], [1, 3, 4], [2, 5]], 
-    [[1, 2, 5, 6], [1, 2, 4, 5], [3, 5, 6], [1, 2, 6]], 
-    [[1, 3, 4, 5], [1, 2, 6], [2, 4, 6], [5, 6]], 
-    [[1, 3, 4, 5, 6], [1, 2, 3, 4, 5], [3, 4, 5, 6], [1, 3, 5, 6], [1, 6]], 
-    [[1, 3, 4, 5, 6], [2, 3, 5, 6], [2, 4, 6], [5, 6], [2, 5]], 
-    [[1, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [1, 2, 3, 6], [3, 4]], 
-    [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [2, 3, 4], [1, 5, 6]], 
-    [[1, 3, 5, 6], [1, 2, 3, 5], [3, 4, 6], [2, 4], [3, 4]], 
-    [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 4, 5, 6], [2, 3, 5], [2, 3]], 
-    [[1, 2, 3, 5, 6], [2, 3, 4, 5], [1, 4, 6], [1, 5], [3, 4]], 
-    [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 5, 6], [1, 5], [2, 3]], 
-    [[2, 3, 4, 5, 6], [1, 2, 4, 6], [1, 3, 6], [2, 4, 5], [1, 2, 5]], 
-    [[1, 2, 3, 4, 5], [1, 3, 4, 5, 6], [2, 3, 5, 6], [1, 2, 3, 4], [2, 3, 6]], 
-    [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 5], [2, 3], [4, 6]],
-    [[1, 3, 4, 6], [2, 4, 6], [1, 2, 3], [1, 4, 6], [5, 6]], 
-    [[1, 2, 3, 4, 6], [2, 4, 6], [1, 2, 3], [2, 5], [1, 6]], 
-    [[1, 2, 3, 4, 5], [1, 3, 4, 6], [3, 5, 6], [1, 4, 5], [1, 2, 5]], 
-    [[1, 2, 4, 5], [3, 5, 6], [3, 4, 6], [4, 5], [1, 5]], 
-    [[1, 2, 3, 4, 5], [2, 3, 4, 5], [4, 5, 6], [1, 4, 6], [3, 4, 6]], 
-    [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 6], [1, 6]], 
-    [[2, 3, 4, 5, 6], [1, 2, 3, 5, 6], [1, 3, 4, 5], [4, 6]], 
-    [[1, 2, 4, 5, 6], [2, 3, 4, 5], [1, 2, 4, 6], [5, 6], [3, 6]]
+#     [[1, 2, 3, 4, 5, 6], [2, 3, 4, 6], [2, 3, 6], [1, 5], [1, 4]], 
+#     [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 6], [1, 2, 3, 5], [2, 4, 5], [1, 2, 3]], 
+#     [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 2, 3, 5], [1, 3, 4], [5, 6]], 
+#     [[1, 2, 3, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5, 6], [1, 2, 4], [4, 5]], 
+#     [[1, 2, 3, 4, 5], [1, 5, 6], [4, 5], [3, 4]], 
+#     [[1, 2, 3, 4, 5], [1, 2, 4, 5, 6], [2, 3, 6], [2, 4, 5], [3, 4]], 
+#     [[1, 2, 3, 4], [1, 4, 5], [3, 4, 6], [2, 5], [3, 6]], 
+#     [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 3, 5], [1, 3, 5, 6], [1, 5, 6]], 
+#     [[1, 2, 4, 5, 6], [2, 3, 4, 5], [2, 3, 4, 6], [1, 2, 5], [1, 5]], 
+#     [[1, 3, 5, 6], [1, 2, 4], [2, 4, 5], [1, 3, 4], [2, 5]], 
+#     [[1, 2, 5, 6], [1, 2, 4, 5], [3, 5, 6], [1, 2, 6]], 
+#     [[1, 3, 4, 5], [1, 2, 6], [2, 4, 6], [5, 6]], 
+#     [[1, 3, 4, 5, 6], [1, 2, 3, 4, 5], [3, 4, 5, 6], [1, 3, 5, 6], [1, 6]], 
+#     [[1, 3, 4, 5, 6], [2, 3, 5, 6], [2, 4, 6], [5, 6], [2, 5]], 
+#     [[1, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [1, 2, 3, 6], [3, 4]], 
+#     [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [2, 3, 4], [1, 5, 6]], 
+#     [[1, 3, 5, 6], [1, 2, 3, 5], [3, 4, 6], [2, 4], [3, 4]], 
+#     [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 4, 5, 6], [2, 3, 5], [2, 3]], 
+#     [[1, 2, 3, 5, 6], [2, 3, 4, 5], [1, 4, 6], [1, 5], [3, 4]], 
+#     [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 5, 6], [1, 5], [2, 3]], 
+#     [[2, 3, 4, 5, 6], [1, 2, 4, 6], [1, 3, 6], [2, 4, 5], [1, 2, 5]], 
+#     [[1, 2, 3, 4, 5], [1, 3, 4, 5, 6], [2, 3, 5, 6], [1, 2, 3, 4], [2, 3, 6]], 
+#     [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 5], [2, 3], [4, 6]],
+#     [[1, 3, 4, 6], [2, 4, 6], [1, 2, 3], [1, 4, 6], [5, 6]], 
+#     [[1, 2, 3, 4, 6], [2, 4, 6], [1, 2, 3], [2, 5], [1, 6]], 
+#     [[1, 2, 3, 4, 5], [1, 3, 4, 6], [3, 5, 6], [1, 4, 5], [1, 2, 5]], 
+#     [[1, 2, 4, 5], [3, 5, 6], [3, 4, 6], [4, 5], [1, 5]], 
+#     [[1, 2, 3, 4, 5], [2, 3, 4, 5], [4, 5, 6], [1, 4, 6], [3, 4, 6]], 
+#     [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 6], [1, 6]], 
+#     [[2, 3, 4, 5, 6], [1, 2, 3, 5, 6], [1, 3, 4, 5], [4, 6]], 
+#     [[1, 2, 4, 5, 6], [2, 3, 4, 5], [1, 2, 4, 6], [5, 6], [3, 6]]
 ]
 
 # Generate random hypergraphs
-for i in range(20):
+for i in range(100):
     random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
     hypergraphs.append(random_hypergraph)
 
@@ -81,6 +81,7 @@ sortedList = [
 sorted_data = [sorted(sublist, key=len, reverse=True) for sublist in sortedList]
 
 sizeOfEdges = [[len(sublist) for sublist in sublists] for sublists in sorted_data]
+stringSizeOfEdges = ["".join(map(str, sublist)) for sublist in sizeOfEdges] # Convert items to string to input into database
 
 listDict = []
 
@@ -108,6 +109,8 @@ dualBeta = []
 dualChordal = []
 dualRegular = []
 dualComplete = []
+
+oneNEO = []
 
 # Go through every hypergraph to get the information needed
 for i in range(len(listDict)):
@@ -143,7 +146,13 @@ for i in range(len(listDict)):
     # Check acyclicity of hypergraph
     hypergraph = copy.deepcopy(checkHypergraphs[i])
     alpha.append(GYO(checkHypergraphs[i]))
-    beta.append(checkBetaAcyclic(hypergraph))
+    checkBeta = checkBetaAcyclic(hypergraph)
+    beta.append(checkBeta)
+
+    if checkBeta == True:
+        oneNEO.append(True)
+    else:
+        oneNEO.append(False)
 
     # Get dual
     D = H.dual()
@@ -169,7 +178,7 @@ for i in range(len(listDict)):
 df['hypergraph'] = listDict
 df['numVertices'] = vertices
 df['numEdges'] = hyperedges
-df['edgeSizes'] = sizeOfEdges 
+df['sizeOfEdges'] = stringSizeOfEdges 
 df['alpha'] = alpha
 df['beta'] = beta
 df['lineGraphChordal'] = chordal
@@ -190,32 +199,35 @@ df['dualGraph'] = df['dualGraph'].apply(json.dumps)
 
 # Dataframe for the table that holds the k-NEOs
 kDf['hypergraph'] = listDict
-kDf['hypergraph'] = kDf['hypergraph'].apply(json.dumps)
+kDf['hypergraph'] = kDf['hypergraph'].apply(json.dumps) # Convert dictionary to string
+kDf['one'] = oneNEO
 
-# # --------
-# # Add dataframes to mysql database
+print(kDf)
 
-# # Database connection information
-# DB_USERNAME = 'root'
-# DB_PASSWORD = # Password
-# DB_HOST = 'localhost'
-# DB_NAME = 'hypergraphs'
+# --------
+# Add dataframes to mysql database
 
-# # Connect to the MySQL database
-# conn = mysql.connector.connect(
-#     host=DB_HOST,
-#     user=DB_USERNAME,
-#     passwd=DB_PASSWORD,
-#     database=DB_NAME
-# )
+# Database connection information
+DB_USERNAME = 'root'
+DB_PASSWORD = 'password'
+DB_HOST = 'localhost'
+DB_NAME = 'hypergraphs'
 
-# # Create a SQLAlchemy engine
-# engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
+# Connect to the MySQL database
+conn = mysql.connector.connect(
+    host=DB_HOST,
+    user=DB_USERNAME,
+    passwd=DB_PASSWORD,
+    database=DB_NAME
+)
 
-# # Insert DataFrame into hypergraph table
-# df.to_sql('hypergraph', con=engine, if_exists='append', index=False)
+# Create a SQLAlchemy engine
+engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
-# kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
+# Insert DataFrame into hypergraph table
+df.to_sql('hypergraphSpecificEdges', con=engine, if_exists='append', index=False)
 
-# # Close the MySQL connection
-# conn.close()
+kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
+
+# Close the MySQL connection
+conn.close()
