@@ -1,6 +1,6 @@
-# # --------
-# # Get data from a hypergraph database to convert into new form
-# # --------
+# --------
+# Get data from a hypergraph database to convert into new form
+# --------
 
 import os
 import pandas as pd
