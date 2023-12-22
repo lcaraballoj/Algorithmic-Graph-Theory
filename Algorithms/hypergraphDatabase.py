@@ -23,8 +23,8 @@ kDf = pd.DataFrame()
 
 # Specify parameters to generate hypergraphs
 numVertices = 6
-numHyperedges = 3
-edgeSizes = [3,3,2]
+numHyperedges = 2
+edgeSizes = [3,3]
 
 # Hypergraphs that have already been tested
 hypergraphs = [
@@ -61,10 +61,16 @@ hypergraphs = [
 #     [[1, 2, 4, 5, 6], [2, 3, 4, 5], [1, 2, 4, 6], [5, 6], [3, 6]]
 ]
 
+numbers = set(range(1,7))
+
 # Generate random hypergraphs
 for i in range(1000):
     random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
-    hypergraphs.append(random_hypergraph)
+    unique_items = set(item for sublist in random_hypergraph for item in sublist) # Get all unique vertices in the hypergraph
+
+    # Make sure that all vertices are in the hypergraph
+    if unique_items == numbers:
+        hypergraphs.append(random_hypergraph)
 
 # Get rid of any duplicate hypergraphs
 noDup = remove_outer_duplicates(hypergraphs)
