@@ -200,7 +200,7 @@ kDf.to_csv('test.csv')
 
 # # Database connection information
 # DB_USERNAME = 'root'
-# DB_PASSWORD = 'Acd2023='
+# DB_PASSWORD = 'password'
 # DB_HOST = 'localhost'
 # DB_NAME = 'hypergraphs'
 
