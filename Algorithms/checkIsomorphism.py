@@ -65,17 +65,9 @@ def checkList(hypergraphs):
 # # Establish a connection to your MySQL database
 # # Database connection information
 # DB_USERNAME = 'root'
-# DB_PASSWORD = 'Acd2023='
+# DB_PASSWORD = 'password'
 # DB_HOST = 'localhost'
 # DB_NAME = 'hypergraphs'
-
-# # Connect to the MySQL database
-# connection = mysql.connector.connect(
-#     host=DB_HOST,
-#     user=DB_USERNAME,
-#     passwd=DB_PASSWORD,
-#     database=DB_NAME
-# )
 
 # # Create a cursor object to execute queries
 # cursor = connection.cursor()
