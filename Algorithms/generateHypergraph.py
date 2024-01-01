@@ -2,7 +2,7 @@
 # Generate random hypergraphs
 # --------
 
-import random, copy
+import random, copy, itertools
 from testGraphs import *
 from betaAcyclic import checkBetaAcyclic
 from grahamsAlgorithm import GYO
