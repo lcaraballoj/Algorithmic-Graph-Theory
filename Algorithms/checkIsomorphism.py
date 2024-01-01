@@ -59,8 +59,8 @@ def checkList(hypergraphs):
 
     # print(dict)
 
-# # --------
-# # Get hypergraphs
+# --------
+# Get hypergraphs
 
 # # Establish a connection to your MySQL database
 # # Database connection information
@@ -69,11 +69,19 @@ def checkList(hypergraphs):
 # DB_HOST = 'localhost'
 # DB_NAME = 'hypergraphs'
 
+# # Connect to the MySQL database
+# connection = mysql.connector.connect(
+#     host=DB_HOST,
+#     user=DB_USERNAME,
+#     passwd=DB_PASSWORD,
+#     database=DB_NAME
+# )
+
 # # Create a cursor object to execute queries
 # cursor = connection.cursor()
 
 # # Example query to select data
-# query = "SELECT * FROM hypergraphSpecificEdges WHERE  sizeOfEdges = '[6, 4, 4, 3]' AND beta = False;"
+# query = "SELECT * FROM hypergraphReduced WHERE  sizeOfEdges = '[6, 4, 4, 3]' AND beta = False;"
 
 # # Execute the query
 # cursor.execute(query)
