@@ -14,6 +14,14 @@ from sqlalchemy import create_engine
 from betaAcyclic import checkBetaAcyclic
 from generateHypergraph import *
 from grahamsAlgorithm import GYO
+from checkIsomorphism import checkList
+
+
+
+# Specify parameters to generate hypergraphs
+numVertices = 6
+numHyperedges = 5
+edgeSizes = []
 
 # Dataframe to hold hypergraph info
 df = pd.DataFrame()
@@ -21,56 +29,51 @@ df = pd.DataFrame()
 # Dataframe for k-NEOs
 kDf = pd.DataFrame()
 
-# Specify parameters to generate hypergraphs
-numVertices = 6
-numHyperedges = 2
-edgeSizes = [3,3]
-
 # Hypergraphs that have already been tested
 hypergraphs = [
-#     [[1, 2, 3, 4, 5, 6], [2, 3, 4, 6], [2, 3, 6], [1, 5], [1, 4]], 
-#     [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 6], [1, 2, 3, 5], [2, 4, 5], [1, 2, 3]], 
-#     [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 2, 3, 5], [1, 3, 4], [5, 6]], 
-#     [[1, 2, 3, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5, 6], [1, 2, 4], [4, 5]], 
-#     [[1, 2, 3, 4, 5], [1, 5, 6], [4, 5], [3, 4]], 
-#     [[1, 2, 3, 4, 5], [1, 2, 4, 5, 6], [2, 3, 6], [2, 4, 5], [3, 4]], 
-#     [[1, 2, 3, 4], [1, 4, 5], [3, 4, 6], [2, 5], [3, 6]], 
-#     [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 3, 5], [1, 3, 5, 6], [1, 5, 6]], 
-#     [[1, 2, 4, 5, 6], [2, 3, 4, 5], [2, 3, 4, 6], [1, 2, 5], [1, 5]], 
-#     [[1, 3, 5, 6], [1, 2, 4], [2, 4, 5], [1, 3, 4], [2, 5]], 
-#     [[1, 2, 5, 6], [1, 2, 4, 5], [3, 5, 6], [1, 2, 6]], 
-#     [[1, 3, 4, 5], [1, 2, 6], [2, 4, 6], [5, 6]], 
-#     [[1, 3, 4, 5, 6], [1, 2, 3, 4, 5], [3, 4, 5, 6], [1, 3, 5, 6], [1, 6]], 
-#     [[1, 3, 4, 5, 6], [2, 3, 5, 6], [2, 4, 6], [5, 6], [2, 5]], 
-#     [[1, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [1, 2, 3, 6], [3, 4]], 
-#     [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [2, 3, 4], [1, 5, 6]], 
-#     [[1, 3, 5, 6], [1, 2, 3, 5], [3, 4, 6], [2, 4], [3, 4]], 
-#     [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 4, 5, 6], [2, 3, 5], [2, 3]], 
-#     [[1, 2, 3, 5, 6], [2, 3, 4, 5], [1, 4, 6], [1, 5], [3, 4]], 
-#     [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 5, 6], [1, 5], [2, 3]], 
-#     [[2, 3, 4, 5, 6], [1, 2, 4, 6], [1, 3, 6], [2, 4, 5], [1, 2, 5]], 
-#     [[1, 2, 3, 4, 5], [1, 3, 4, 5, 6], [2, 3, 5, 6], [1, 2, 3, 4], [2, 3, 6]], 
-#     [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 5], [2, 3], [4, 6]],
-#     [[1, 3, 4, 6], [2, 4, 6], [1, 2, 3], [1, 4, 6], [5, 6]], 
-#     [[1, 2, 3, 4, 6], [2, 4, 6], [1, 2, 3], [2, 5], [1, 6]], 
-#     [[1, 2, 3, 4, 5], [1, 3, 4, 6], [3, 5, 6], [1, 4, 5], [1, 2, 5]], 
-#     [[1, 2, 4, 5], [3, 5, 6], [3, 4, 6], [4, 5], [1, 5]], 
-#     [[1, 2, 3, 4, 5], [2, 3, 4, 5], [4, 5, 6], [1, 4, 6], [3, 4, 6]], 
-#     [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 6], [1, 6]], 
-#     [[2, 3, 4, 5, 6], [1, 2, 3, 5, 6], [1, 3, 4, 5], [4, 6]], 
-#     [[1, 2, 4, 5, 6], [2, 3, 4, 5], [1, 2, 4, 6], [5, 6], [3, 6]]
+    [[1, 2, 3, 4, 5, 6], [2, 3, 4, 6], [2, 3, 6], [1, 5], [1, 4]], 
+    [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 6], [1, 2, 3, 5], [2, 4, 5], [1, 2, 3]], 
+    [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 2, 3, 5], [1, 3, 4], [5, 6]], 
+    [[1, 2, 3, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5, 6], [1, 2, 4], [4, 5]], 
+    [[1, 2, 3, 4, 5], [1, 5, 6], [4, 5], [3, 4]], 
+    [[1, 2, 3, 4, 5], [1, 2, 4, 5, 6], [2, 3, 6], [2, 4, 5], [3, 4]], 
+    [[1, 2, 3, 4], [1, 4, 5], [3, 4, 6], [2, 5], [3, 6]], 
+    [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 3, 5], [1, 3, 5, 6], [1, 5, 6]], 
+    [[1, 2, 4, 5, 6], [2, 3, 4, 5], [2, 3, 4, 6], [1, 2, 5], [1, 5]], 
+    [[1, 3, 5, 6], [1, 2, 4], [2, 4, 5], [1, 3, 4], [2, 5]], 
+    [[1, 2, 5, 6], [1, 2, 4, 5], [3, 5, 6], [1, 2, 6]], 
+    [[1, 3, 4, 5], [1, 2, 6], [2, 4, 6], [5, 6]], 
+    [[1, 3, 4, 5, 6], [1, 2, 3, 4, 5], [3, 4, 5, 6], [1, 3, 5, 6], [1, 6]], 
+    [[1, 3, 4, 5, 6], [2, 3, 5, 6], [2, 4, 6], [5, 6], [2, 5]], 
+    [[1, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [1, 2, 3, 6], [3, 4]], 
+    [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [2, 3, 4], [1, 5, 6]], 
+    [[1, 3, 5, 6], [1, 2, 3, 5], [3, 4, 6], [2, 4], [3, 4]], 
+    [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 4, 5, 6], [2, 3, 5], [2, 3]], 
+    [[1, 2, 3, 5, 6], [2, 3, 4, 5], [1, 4, 6], [1, 5], [3, 4]], 
+    [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 5, 6], [1, 5], [2, 3]], 
+    [[2, 3, 4, 5, 6], [1, 2, 4, 6], [1, 3, 6], [2, 4, 5], [1, 2, 5]], 
+    [[1, 2, 3, 4, 5], [1, 3, 4, 5, 6], [2, 3, 5, 6], [1, 2, 3, 4], [2, 3, 6]], 
+    [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 5], [2, 3], [4, 6]],
+    [[1, 3, 4, 6], [2, 4, 6], [1, 2, 3], [1, 4, 6], [5, 6]], 
+    [[1, 2, 3, 4, 6], [2, 4, 6], [1, 2, 3], [2, 5], [1, 6]], 
+    [[1, 2, 3, 4, 5], [1, 3, 4, 6], [3, 5, 6], [1, 4, 5], [1, 2, 5]], 
+    [[1, 2, 4, 5], [3, 5, 6], [3, 4, 6], [4, 5], [1, 5]], 
+    [[1, 2, 3, 4, 5], [2, 3, 4, 5], [4, 5, 6], [1, 4, 6], [3, 4, 6]], 
+    [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 6], [1, 6]], 
+    [[2, 3, 4, 5, 6], [1, 2, 3, 5, 6], [1, 3, 4, 5], [4, 6]], 
+    [[1, 2, 4, 5, 6], [2, 3, 4, 5], [1, 2, 4, 6], [5, 6], [3, 6]]
 ]
 
-numbers = set(range(1,7))
+numbers = set(range(1,numVertices + 1))
 
-# Generate random hypergraphs
-for i in range(1000):
-    random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
-    unique_items = set(item for sublist in random_hypergraph for item in sublist) # Get all unique vertices in the hypergraph
+# # Generate random hypergraphs
+# for i in range(1000000):
+#     random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
+#     unique_items = set(item for sublist in random_hypergraph for item in sublist) # Get all unique vertices in the hypergraph
 
-    # Make sure that all vertices are in the hypergraph
-    if unique_items == numbers:
-        hypergraphs.append(random_hypergraph)
+#     # Make sure that all vertices are in the hypergraph
+#     if unique_items == numbers:
+#         hypergraphs.append(random_hypergraph)
 
 # Get rid of any duplicate hypergraphs
 noDup = remove_outer_duplicates(hypergraphs)
@@ -86,10 +89,10 @@ sortedList = [
 
 sorted_data = [sorted(sublist, key=len, reverse=True) for sublist in sortedList]
 
-sizeOfEdges = [[len(sublist) for sublist in sublists] for sublists in sorted_data]
-stringSizeOfEdges = [str(sublist) for sublist in sizeOfEdges] # Convert items to string to input into database
+# sizeOfEdges = [[len(sublist) for sublist in sublists] for sublists in sorted_data]
+# stringSizeOfEdges = [str(sublist) for sublist in sizeOfEdges] # Convert items to string to input into database
 
-listDict = []
+fullList = []
 
 # Create dictionary from sortedList
 for i in range(len(sorted_data)):
@@ -97,8 +100,16 @@ for i in range(len(sorted_data)):
     for j in range(len(sorted_data[i])):
         hypergraphDict['e{}'.format(j)] = sorted_data[i][j]
 
-    listDict.append(hypergraphDict)
+    fullList.append(hypergraphDict)
 
+listDict = fullList # checkList(fullList)
+
+sizeOfEdges = []
+stringSizeOfEdges = []
+
+for i in range(len(listDict)):
+    sizeOfEdges.append(edgeSizes)
+    stringSizeOfEdges = [str(sublist) for sublist in sizeOfEdges] # Convert items to string to input into database
 
 # Initialize arrays for data
 checkHypergraphs = copy.deepcopy(listDict) # Copy to retain original dictionary
@@ -186,8 +197,6 @@ df['dualLineChordal'] = dualChordal
 df['dualLineRegular'] = dualRegular
 df['dualLineComplete'] = dualComplete
 
-print(df)
-
 # Convert Dictionary to string
 df['hypergraph'] = df['hypergraph'].apply(json.dumps)
 df['dualGraph'] = df['dualGraph'].apply(json.dumps)
@@ -197,9 +206,9 @@ kDf['hypergraph'] = listDict
 kDf['hypergraph'] = kDf['hypergraph'].apply(json.dumps) # Convert dictionary to string
 kDf['one'] = oneNEO
 
-print(kDf)
+# print(kDf)
 
-kDf.to_csv('test.csv')
+df.to_csv('test.csv')
 
 # # --------
 # # Add dataframes to mysql database
@@ -222,9 +231,9 @@ kDf.to_csv('test.csv')
 # engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
 # # Insert DataFrame into hypergraph table
-# df.to_sql('hypergraphSpecificEdges', con=engine, if_exists='append', index=False)
+# df.to_sql('hypergraphReduced', con=engine, if_exists='append', index=False)
 
-# kDf.to_sql('kNEO', con=engine, if_exists='append', index=False)
+# kDf.to_sql('kNEOReduced', con=engine, if_exists='append', index=False)
 
 # # Close the MySQL connection
 # conn.close()
