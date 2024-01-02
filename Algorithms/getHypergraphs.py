@@ -4,8 +4,9 @@
 
 from PIL import Image
 from collections import defaultdict
+from betaAcyclic import findNestPoint
 import numpy as np
-
+import pandas as pd
 import os
 import mysql.connector, json
 import hypernetx as hnx
@@ -61,7 +62,7 @@ def getPictures(list_of_dicts):
             **kwargs
         )
 
-        plt.savefig("Graphs/hypergraph" + str(i) + ".png")
+        plt.savefig("Temp/hypergraph" + str(i) + ".png")
         plt.clf()
 
         i += 1
@@ -105,8 +106,15 @@ def createGrid(folder_path):
 def incidenceMatrices(hypergraph):
     incidenceMatrix = []
     for i in range(len(hypergraph)):
+        print(hypergraph[i])
+
         H = hnx.Hypergraph(hypergraph[i])
-        incidenceMatrix.append(H.incidence_matrix().toarray())
+        result = H.incidence_matrix().toarray()
+        incidenceMatrix.append(result)
+
+        cols = ["e0", "e1", "e2", "e3", "e4"]
+        df = pd.DataFrame(result, columns=cols, index=[1,2,3,4,5,6])
+        print(df)
 
     return incidenceMatrix
 
@@ -141,22 +149,6 @@ def submatrices(matrix):
                     
     return submatrices_list
 
-def gridSearch(G, P):
-    g_sze = len(G)
-    p_sze = len(P)
-    p_ptr = 0
-    for g_ptr, g_row in enumerate(G):
-        if P[p_ptr] in g_row:
-            p_ptr += 1
-            if p_ptr == p_sze:
-                return True
-        else:
-            p_ptr = 0
-            if g_sze - g_ptr < p_sze-p_ptr:
-                return False
-
-    return False
-
 
 # Establish a connection to your MySQL database
 # Database connection information
@@ -165,12 +157,23 @@ DB_PASSWORD = 'password'
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
-query = "SELECT hypergraph FROM kNEOReduced WHERE one = False AND two IS NOT NULL;"
+query = "SELECT hypergraph FROM kNEOReduced INNER JOIN hypergraphReduced USING (hypergraph) WHERE hypergraphReduced.numEdges = 5 AND one = False AND two IS NOT NULL ORDER BY hypergraph;"
 
 # Folder containing your images
-folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/Graphs'
+# folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/Temp'
 
-matrices = incidenceMatrices(getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query))
+# matrices = incidenceMatrices(getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query))
 
-for i in range(len(matrices)):
-    print(submatrices(matrices[i]), '\n')
+# for i in range(len(matrices)):
+#     print(submatrices(matrices[i]), '\n')
+
+hypergraphs = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
+
+print(hypergraphs)
+
+incidenceMatrices(hypergraphs)
+
+# getPictures(hypergraphs)
+
+# createGrid(folder_path)
+             
