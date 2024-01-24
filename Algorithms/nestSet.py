@@ -1,9 +1,11 @@
 import itertools, copy
 
-from betaAcyclic import deleteEmptyEdge
+from betaAcyclic import deleteEmptyEdge, checkBetaAcyclic
+from findNestPoints import *
 
 # Find all possible nest sets
 def getSet(hypergraph, size):
+    findNestPoint(copy.deepcopy(hypergraph))
     # List of hyperedges
     verticesEdges = []
     
@@ -42,12 +44,15 @@ def isNestSet(listSets, verticesEdges):
     return nestSets
 
 def linearlyOrdered(listSets):
+    listSets.sort(key = len)
+    # print(listSets)
     count = 0
     for i in range(len(listSets)-1):
         if set(listSets[i]) <= set(listSets[i+1]) or set(listSets[i]) >= set(listSets[i+1]):
             count += 1
+            # print('Count: ', count)
         
-    if count == (len(listSets) - 1):
+    if count == (len(listSets)-1):
         return True
     else: 
         return False
@@ -90,7 +95,15 @@ def removeVertices(hypergraph, setVertices):
 #         else:
 #             print(NEO(ORIGINAL, history, current_nest_set))
 
-# hypergraph = {"e0": [1, 2, 3, 4, 5, 6, 7, 8], "e1": [1, 2, 3, 4, 5, 6], "e2": [2, 7, 8], "e3": [5, 8]}
-# initial_history = [{'hypergraph': hypergraph, 'nestSets': getSet(hypergraph, 2)}]
-
-# easy(hypergraph, initial_history)
+# hypergraph = {"e0": [1, 2, 3, 4, 5, 6, 7, 8], "e1": [1, 2, 3, 4, 5, 7], "e2": [1, 2, 5, 6, 8], "e3": [2, 3, 6], "e4": [3, 7], "e5": [4, 8]}
+# hypergraph1 = removeVertices(copy.deepcopy(hypergraph), [2])
+# hypergraph2 = removeVertices(copy.deepcopy(hypergraph1), [1,4])
+# hypergraph3 = removeVertices(copy.deepcopy(hypergraph2), [2,4])
+# hypergraph4 = removeVertices(copy.deepcopy(hypergraph3), [1,3])
+# hypergraph5 = removeVertices(copy.deepcopy(hypergraph4), [2,7])
+# print('H0 Nest Set: ', getSet(hypergraph, 2))
+# print('H1 Nest Set: ', getSet(hypergraph1, 2)) # print('H2 Nest Set: ', getSet(hypergraph2, 2))  
+# print('H3 Nest Set: ', getSet(hypergraph3, 2)) 
+# print('H4 Nest Set: ', getSet(hypergraph4, 2))
+# print('H5 Nest Set: ', getSet(hypergraph5, 2))
+# print(checkBetaAcyclic(hypergraph))

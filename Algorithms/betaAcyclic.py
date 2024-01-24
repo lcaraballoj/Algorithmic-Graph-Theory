@@ -97,7 +97,7 @@ def findNestPoint(hypergraph):
                 # print("Node in: ", verticesEdges[j])
                 edgeLength[j] = len(verticesEdges[j])
 
-        sort = mergeSortDict(edgeLength)
+        sort = dict(sorted(edgeLength.items(), key=lambda item: item[1]))
 
         # print("Unsrt: ", edgeLength)
         # print("Srt:", sort)
@@ -129,9 +129,10 @@ def checkNested(dict, listEdges):
     for i in range(0, len(dictKeys)):
         edgeIndex.append(dictKeys[i])
 
-    #print("EDGE INDEX: ", edgeIndex)
-
+    # print("EDGE INDEX: ", edgeIndex)
+        
     for i in range(len(dictKeys)-1):
+        
         # print("Current: ", listEdges[edgeIndex[i]])
         # print("Next: ", listEdges[edgeIndex[i+1]])
         if set(listEdges[edgeIndex[i]]) <= set(listEdges[edgeIndex[i+1]]) or set(listEdges[edgeIndex[i]]) >= set(listEdges[edgeIndex[i+1]]):
