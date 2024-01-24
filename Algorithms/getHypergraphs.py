@@ -157,23 +157,35 @@ DB_PASSWORD = 'password'
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
-query = "SELECT hypergraph FROM kNEOReduced INNER JOIN hypergraphReduced USING (hypergraph) WHERE hypergraphReduced.numEdges = 5 AND one = False AND two IS NOT NULL ORDER BY hypergraph;"
+query = "SELECT hypergraph FROM kNEOReduced INNER JOIN hypergraphReduced USING (hypergraph) WHERE one = False and two IS NOT NULL;"
 
 # Folder containing your images
-# folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/Temp'
+folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/Temp'
 
 # matrices = incidenceMatrices(getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query))
 
 # for i in range(len(matrices)):
 #     print(submatrices(matrices[i]), '\n')
 
-hypergraphs = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
+# hypergraphs = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
 
-print(hypergraphs)
+# print(hypergraphs)
 
-incidenceMatrices(hypergraphs)
+# incidenceMatrices(hypergraphs)
 
 # getPictures(hypergraphs)
 
 # createGrid(folder_path)
+
+# triangle = {
+#         'e2': [2,3],
+#         'e3': [2,4],
+#         'e4': [3,4]
+#     }
+
+# T = hnx.Hypergraph(triangle)
+
+# print(T.is_connected())
+
+# print(T.incidence_matrix().toarray())
              

@@ -24,8 +24,8 @@ def mergeSortDict(dictionary):
 
 def mergeDict(left_half, right_half):
     result = {}
-    left_keys = list(left_half.keys())
-    right_keys = list(right_half.keys())
+    left_keys = list(left_half.values())
+    right_keys = list(right_half.values())
     i = 0
     j = 0
     while i < len(left_keys) and j < len(right_keys):

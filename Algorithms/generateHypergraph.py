@@ -20,18 +20,6 @@ def generate_random_hypergraph(numVertices, numHyperedges, edgeSize):
 
     return hyperedges
 
-# Check if hypergraph is connected
-def is_connected(hyperedges, numVertices):
-    # Create a set containing all vertices
-    all_vertices = set(range(1, numVertices + 1))
-
-    # Traverse hyperedges and merge vertices to find connected components
-    connected_vertices = set()
-    for edge in hyperedges:
-        connected_vertices.update(edge)
-
-    return connected_vertices == all_vertices
-
 # Remove duplicate hypergraph
 def remove_outer_duplicates(list_of_lists_of_lists):
     seen = set()
