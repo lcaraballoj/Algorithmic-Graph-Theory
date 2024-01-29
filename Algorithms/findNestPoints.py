@@ -45,4 +45,5 @@ def findNestPoint(hypergraph):
                 if nodes[i] in vertices:
                     vertices.remove(nodes[i])
 
-    print("Nest Points: ", nestPoints)
+    # print("Nest Points: ", nestPoints)
+    return nestPoints
