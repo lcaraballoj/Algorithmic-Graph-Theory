@@ -157,7 +157,7 @@ DB_PASSWORD = 'password'
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
-query = "SELECT hypergraph FROM kNEOReduced INNER JOIN hypergraphReduced USING (hypergraph) WHERE one = False and two IS NOT NULL;"
+query = "SELECT hypergraph FROM hypergraphReduced WHERE sizeOfEdges = '[5, 2, 2, 2]';"
 
 # Folder containing your images
 folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/Temp'
@@ -167,7 +167,10 @@ folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorit
 # for i in range(len(matrices)):
 #     print(submatrices(matrices[i]), '\n')
 
-# hypergraphs = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
+hypergraphs = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
+
+# for i in range(len(hypergraphs)):
+#     print(hypergraphs[i])
 
 # print(hypergraphs)
 
