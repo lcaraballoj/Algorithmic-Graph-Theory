@@ -2,28 +2,18 @@
 # GYO algorithm (Graham's algorithm) is an algorithm that finds if a hypergraph is alpha-acyclic or not
 # --------
 
-import copy # Used to ensure a deep copy where inner lists are also copied
+import copy
 
 def GYO(hypergraph):
     ORIGINAL = copy.deepcopy(hypergraph)
 
     # Run elimination and then reduction with hypergraph from elimination function
     elimination(hypergraph)
-    verticesEdges = []
-    for edges, vertices in hypergraph.items():
-        verticesEdges.append(vertices)
-
-    reduction(hypergraph, verticesEdges)
-
-    # List of vertices
-    nodes = [] 
-    for i in range(0, len(verticesEdges)):
-        nodes = list(set(verticesEdges[i] + nodes))
 
     # print('ORG: ', ORIGINAL)
     # print('New: ', hypergraph)
 
-    # Recursion
+    # Keep repeating until you get the empty hypergraph or the hypergraph remains unchanged
     if bool(hypergraph) == False:
         # print("Alpha Acyclic")
         return True
@@ -33,26 +23,23 @@ def GYO(hypergraph):
     else:
         return GYO(hypergraph)
 
-
-# Elimination
 def elimination(hypergraph):
-    # Set count
+    # Elimination of vertices that are only in one hyperedge
     count = 0
 
-    verticesEdges = []
+    hyperedges = []
     for edges, vertices in hypergraph.items():
-        verticesEdges.append(vertices)
+        hyperedges.append(vertices)
 
-    # List of vertices
-    nodes = [] 
-    for i in range(0, len(verticesEdges)):
-        nodes = list(set(verticesEdges[i] + nodes))
+    listVertices = [] 
+    for i in range(0, len(hyperedges)):
+        listVertices = list(set(hyperedges[i] + listVertices))
     
-    #print("Nodes: ", nodes)
+    #print("listVertices: ", listVertices)
 
     # Start elimination of vertices that appear only in one edge
-    for i in range(0, len(nodes)):
-        vertex = nodes[i]
+    for i in range(0, len(listVertices)):
+        vertex = listVertices[i]
         # print("Vertex: ", vertex)
         for edges, vertices in hypergraph.items():
             if vertex in vertices:
@@ -71,33 +58,34 @@ def elimination(hypergraph):
     # for edge, vertices in hypergraph.items():
     #     print(f"{edge}: {vertices}")
 
-    verticesEdges = []
+    hyperedges = []
     for edges, vertices in hypergraph.items():
-        verticesEdges.append(vertices)
+        hyperedges.append(vertices)
 
-    return hypergraph
+    return reduction(hypergraph, hyperedges)
 
+def reduction(hypergraph, hyperedges):
+    # Reduce hypergraph by removing nested hyperedges
+    for i in range(len(hyperedges)):
+        for j in range(len(hyperedges)):
+            # Check if hyperedges are nested
+            if i!= j and set(hyperedges[i]) <= set(hyperedges[j]):
+                deleteHyperedge(hypergraph, hyperedges[i])
+            elif not hyperedges[i]:
+                deleteHyperedge(hypergraph, hyperedges[i])
 
-# Reduction
-def reduction(hypergraph, verticesEdges):
-    for i in range(len(verticesEdges)):
-        for j in range(len(verticesEdges)):
-            if i!= j and set(verticesEdges[i]) <= set(verticesEdges[j]):
-                deleteEdge(hypergraph, verticesEdges[i])
-            elif not verticesEdges[i]:
-                deleteEdge(hypergraph, verticesEdges[i])
-
-    # Print new hypergraph
+    # # Print new hypergraph
     # print("Reduction:")
     # for edge, vertices in hypergraph.items():
     #     print(f"{edge}: {vertices}")
 
     return hypergraph
 
-# Delete Edge
-def deleteEdge(hypergraph, vertexEdge):
+def deleteHyperedge(hypergraph, hyperedge):
     for edge, vertices in dict(hypergraph).items():
-        if vertices == vertexEdge:
+        if vertices == hyperedge:
             del hypergraph[edge]
 
     return hypergraph
+
+print(GYO({"e0": [1, 3, 4, 5], "e1": [3, 5], "e2": [1, 2], "e3": [4, 5]}))
