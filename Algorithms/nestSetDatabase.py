@@ -15,7 +15,7 @@ df = pd.DataFrame()
 
 # Database connection information
 DB_USERNAME = 'root'
-DB_PASSWORD = 'password'
+DB_PASSWORD = 'Acd2023='
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
@@ -27,7 +27,7 @@ conn = mysql.connector.connect(
     database=DB_NAME
 )
 
-query = "SELECT hypergraph FROM hypergraphReduced WHERE numVertices = 5 AND sizeOfEdges = '[5, 3, 3, 3]';"
+query = "SELECT hypergraph FROM hypergraphReduced WHERE numVertices = 8 AND sizeOfEdges = '[4, 4, 3]';"
 hypergraphList = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
 
 hypergraphs = []

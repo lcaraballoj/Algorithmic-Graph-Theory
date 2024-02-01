@@ -2,7 +2,7 @@
 # This code generates random hypergraphs given specific parameters and then inputs them into a mysql database table
 # --------
 
-import copy, json
+import copy, json, os
 import hypernetx as hnx
 import networkx as nx
 import pandas as pd
@@ -17,11 +17,21 @@ from grahamsAlgorithm import GYO
 from checkIsomorphism import checkList
 
 
+def connected(hypergraph):
+    connectedHypergraph = []
+    for i in range(len(hypergraph)):
+        H = hnx.Hypergraph(hypergraph[i])
+        if H.is_connected() == True:
+            connectedHypergraph.append(hypergraph[i])
+
+    return connectedHypergraph
+
 
 # Specify parameters to generate hypergraphs
-numVertices = 6
-numHyperedges = 5
-edgeSizes = []
+numVertices = 7
+numHyperedges = 4
+edgeSizes = [3,3,3,3]
+numbers = set(range(1,numVertices + 1))
 
 # Dataframe to hold hypergraph info
 df = pd.DataFrame()
@@ -31,55 +41,30 @@ kDf = pd.DataFrame()
 
 # Hypergraphs that have already been tested
 hypergraphs = [
-    # [[1, 2, 3, 4, 5, 6], [2, 3, 4, 6], [2, 3, 6], [1, 5], [1, 4]], 
-    # [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 6], [1, 2, 3, 5], [2, 4, 5], [1, 2, 3]], 
-    # [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 2, 3, 5], [1, 3, 4], [5, 6]], 
-    # [[1, 2, 3, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5, 6], [1, 2, 4], [4, 5]], 
-    # [[1, 2, 3, 4, 5], [1, 5, 6], [4, 5], [3, 4]], 
-    # [[1, 2, 3, 4, 5], [1, 2, 4, 5, 6], [2, 3, 6], [2, 4, 5], [3, 4]], 
-    # [[1, 2, 3, 4], [1, 4, 5], [3, 4, 6], [2, 5], [3, 6]], 
-    # [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 3, 5], [1, 3, 5, 6], [1, 5, 6]], 
-    # [[1, 2, 4, 5, 6], [2, 3, 4, 5], [2, 3, 4, 6], [1, 2, 5], [1, 5]], 
-    # [[1, 3, 5, 6], [1, 2, 4], [2, 4, 5], [1, 3, 4], [2, 5]], 
-    # [[1, 2, 5, 6], [1, 2, 4, 5], [3, 5, 6], [1, 2, 6]], 
-    # [[1, 3, 4, 5], [1, 2, 6], [2, 4, 6], [5, 6]], 
-    # [[1, 3, 4, 5, 6], [1, 2, 3, 4, 5], [3, 4, 5, 6], [1, 3, 5, 6], [1, 6]], 
-    # [[1, 3, 4, 5, 6], [2, 3, 5, 6], [2, 4, 6], [5, 6], [2, 5]], 
-    # [[1, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [1, 2, 3, 6], [3, 4]], 
-    # [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [1, 3, 4, 5], [2, 3, 4], [1, 5, 6]], 
-    # [[1, 3, 5, 6], [1, 2, 3, 5], [3, 4, 6], [2, 4], [3, 4]], 
-    # [[1, 2, 3, 4, 5, 6], [1, 3, 4, 5, 6], [1, 4, 5, 6], [2, 3, 5], [2, 3]], 
-    # [[1, 2, 3, 5, 6], [2, 3, 4, 5], [1, 4, 6], [1, 5], [3, 4]], 
-    # [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 5, 6], [1, 5], [2, 3]], 
-    # [[2, 3, 4, 5, 6], [1, 2, 4, 6], [1, 3, 6], [2, 4, 5], [1, 2, 5]], 
-    # [[1, 2, 3, 4, 5], [1, 3, 4, 5, 6], [2, 3, 5, 6], [1, 2, 3, 4], [2, 3, 6]], 
-    # [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [1, 2, 5], [2, 3], [4, 6]],
-    # [[1, 3, 4, 6], [2, 4, 6], [1, 2, 3], [1, 4, 6], [5, 6]], 
-    # [[1, 2, 3, 4, 6], [2, 4, 6], [1, 2, 3], [2, 5], [1, 6]], 
-    # [[1, 2, 3, 4, 5], [1, 3, 4, 6], [3, 5, 6], [1, 4, 5], [1, 2, 5]], 
-    # [[1, 2, 4, 5], [3, 5, 6], [3, 4, 6], [4, 5], [1, 5]], 
-    # [[1, 2, 3, 4, 5], [2, 3, 4, 5], [4, 5, 6], [1, 4, 6], [3, 4, 6]], 
-    # [[1, 2, 3, 4, 5], [1, 2, 3, 4], [4, 6], [1, 6]], 
-    # [[2, 3, 4, 5, 6], [1, 2, 3, 5, 6], [1, 3, 4, 5], [4, 6]], 
-    # [[1, 2, 4, 5, 6], [2, 3, 4, 5], [1, 2, 4, 6], [5, 6], [3, 6]]
+    # [[1, 2, 3, 4, 5, 6, 7, 8], [1, 4, 6, 8], [2, 5, 6],[1, 5, 8]],
+    # [[1, 2, 3, 4, 5, 6, 7, 8], [1, 4, 5, 8], [2, 5, 6], [2, 7, 8]],
+    # [[1, 2, 3, 4, 5, 6, 7, 8], [2, 3, 5, 6], [1, 2, 3], [1, 3, 6]],
+    # [[1, 2, 3, 4, 5, 6, 7, 8], [1, 2, 4, 7], [4, 5, 7],  [1, 2, 5]],
+    # [[1, 2, 3, 4, 5, 6, 7, 8], [1, 2, 5, 7], [2, 3, 6], [3, 6, 7]]
 ]
 
-numbers = set(range(1,numVertices + 1))
+# Generate random hypergraphs
+for i in range(10000):
+    random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
+    unique_items = set(item for sublist in random_hypergraph for item in sublist) # Get all unique vertices in the hypergraph
 
-# # Generate random hypergraphs
-# for i in range(1000000):
-#     random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
-#     unique_items = set(item for sublist in random_hypergraph for item in sublist) # Get all unique vertices in the hypergraph
-
-#     # Make sure that all vertices are in the hypergraph
-#     if unique_items == numbers:
-#         hypergraphs.append(random_hypergraph)
+    # Make sure that all vertices are in the hypergraph
+    if unique_items == numbers:
+        hypergraphs.append(random_hypergraph)
 
 # Get rid of any duplicate hypergraphs
 noDup = remove_outer_duplicates(hypergraphs)
 
 # Get rid of hypergraphs that do not have the number of hyperedges specified
 cleanList = [x for x in noDup if len(x)== numHyperedges]
+
+# Get rid of hypergraphs that do not have all the vertices
+# allVertices = [x for x in cleanList if set(val for sublist in x for val in sublist) == values]
 
 # Sort the vertices in each hyperedge of each hypergraph
 sortedList = [
@@ -88,6 +73,7 @@ sortedList = [
 ]
 
 sorted_data = [sorted(sublist, key=len, reverse=True) for sublist in sortedList]
+
 
 # sizeOfEdges = [[len(sublist) for sublist in sublists] for sublists in sorted_data]
 # stringSizeOfEdges = [str(sublist) for sublist in sizeOfEdges] # Convert items to string to input into database
@@ -102,8 +88,12 @@ for i in range(len(sorted_data)):
 
     fullList.append(hypergraphDict)
 
-listDict = fullList # checkList(fullList)
+connectedList = connected(fullList)
 
+# Account for isomorphic graphs
+listDict = checkList(connectedList)
+
+# Get sizeOfEdges
 sizeOfEdges = []
 stringSizeOfEdges = []
 
@@ -208,32 +198,35 @@ kDf['one'] = oneNEO
 
 print(kDf)
 
-# df.to_csv('test.csv')
+df.to_csv('test.csv')
 
-# # --------
-# # Add dataframes to mysql database
+# --------
+# Add dataframes to mysql database
 
-# # Database connection information
-# DB_USERNAME = 'root'
-# DB_PASSWORD = 'password'
-# DB_HOST = 'localhost'
-# DB_NAME = 'hypergraphs'
+# Database connection information
+DB_USERNAME = 'root'
+DB_PASSWORD = 'Acd2023='
+DB_HOST = 'localhost'
+DB_NAME = 'hypergraphs'
 
-# # Connect to the MySQL database
-# conn = mysql.connector.connect(
-#     host=DB_HOST,
-#     user=DB_USERNAME,
-#     passwd=DB_PASSWORD,
-#     database=DB_NAME
-# )
+# Connect to the MySQL database
+conn = mysql.connector.connect(
+    host=DB_HOST,
+    user=DB_USERNAME,
+    passwd=DB_PASSWORD,
+    database=DB_NAME
+)
 
-# # Create a SQLAlchemy engine
-# engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
+# Create a SQLAlchemy engine
+engine = create_engine(f"mysql+mysqlconnector://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}")
 
-# # Insert DataFrame into hypergraph table
-# df.to_sql('hypergraphReduced', con=engine, if_exists='append', index=False)
+# Insert DataFrame into hypergraph table
+df.to_sql('hypergraphReduced', con=engine, if_exists='append', index=False)
 
-# kDf.to_sql('kNEOReduced', con=engine, if_exists='append', index=False)
+kDf.to_sql('kNEOReduced', con=engine, if_exists='append', index=False)
 
-# # Close the MySQL connection
-# conn.close()
+# Close the MySQL connection
+conn.close()
+
+
+os.system('say "your program has finished"')
