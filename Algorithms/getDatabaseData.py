@@ -10,7 +10,7 @@ import mysql.connector, json
 # Establish a connection to your MySQL database
 # Database connection information
 DB_USERNAME = 'root'
-DB_PASSWORD = 'Acd2023='
+DB_PASSWORD = 'password'
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
