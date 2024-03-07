@@ -4,8 +4,6 @@
 
 import random, copy, itertools
 from testGraphs import *
-from betaAcyclic import checkBetaAcyclic
-from grahamsAlgorithm import GYO
 
 def generate_random_hypergraph(numVertices, numHyperedges, edgeSize):
     if numVertices <= 0 or numHyperedges <= 0 or len(edgeSize) != numHyperedges:
