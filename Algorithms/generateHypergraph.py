@@ -5,14 +5,14 @@
 import random, copy, itertools
 from testGraphs import *
 
-def generate_random_hypergraph(numVertices, numHyperedges, edgeSize):
-    if numVertices <= 0 or numHyperedges <= 0 or len(edgeSize) != numHyperedges:
+def generate_random_hypergraph(numVertices, num_hyperedges, edge_size):
+    if numVertices <= 0 or num_hyperedges <= 0 or len(edge_size) != num_hyperedges:
         raise ValueError("Inputs must be positive integers")
 
     vertices = set(range(1, numVertices + 1))
     hyperedges = []
 
-    for size in edgeSize:
+    for size in edge_size:
         verticesInEdge = random.sample(vertices, size)
         hyperedges.append(verticesInEdge)
 
