@@ -15,7 +15,7 @@ df = pd.DataFrame()
 
 # Database connection information
 DB_USERNAME = 'root'
-DB_PASSWORD = 'Acd2023='
+DB_PASSWORD = 'passwords'
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
@@ -40,9 +40,9 @@ def nestSets(hypergraphList):
 
     for i in range(len(hypergraphList)):
         hypergraphs.append(hypergraphList[i])
-        nestPoint.append(getSet(copy.deepcopy(hypergraphList[i]), 1))
-        twoNestSet.append(getSet(copy.deepcopy(hypergraphList[i]),2))
-        threeNestSet.append(getSet(copy.deepcopy(hypergraphList[i]),3))
+        nestPoint.append(get_set(copy.deepcopy(hypergraphList[i]), 1))
+        twoNestSet.append(get_set(copy.deepcopy(hypergraphList[i]),2))
+        threeNestSet.append(get_set(copy.deepcopy(hypergraphList[i]),3))
 
     df['hypergraph'] = hypergraphs
     df['nestPoint'] = nestPoint
