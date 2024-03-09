@@ -9,7 +9,7 @@ from betaAcyclic import delete_empty_edge
 def neo(hypergraph, size):
     ORIGINAL = copy.deepcopy(hypergraph)
 
-    getSet(hypergraph, size)
+    get_set(hypergraph, size)
 
     # Keep repeating until you get the empty hypergraph or the hypergraph remains unchanged
     if bool(hypergraph) == False:
@@ -19,7 +19,7 @@ def neo(hypergraph, size):
     else:
         return neo(hypergraph, size)
 
-def getSet(hypergraph, size):
+def get_set(hypergraph, size):
     # Find all possible nest sets
     hyperedges = []
     
