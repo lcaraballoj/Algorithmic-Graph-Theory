@@ -3,14 +3,13 @@
 # --------
 
 from PIL import Image
-from collections import defaultdict
-from betaAcyclic import findNestPoint
 import numpy as np
 import pandas as pd
-import os
-import mysql.connector, json
+import copy, json, os, mysql.connector
 import hypernetx as hnx
 import matplotlib.pyplot as plt
+
+from grahamsAlgorithm import GYO
 
 # Get hypergraphs from database based on a specific query
 def getHypergraphs(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, query):
@@ -62,7 +61,7 @@ def getPictures(list_of_dicts):
             **kwargs
         )
 
-        plt.savefig("Temp/hypergraph" + str(i) + ".png")
+        plt.savefig("beta/hypergraph" + str(i) + ".png")
         plt.clf()
 
         i += 1
@@ -153,14 +152,14 @@ def submatrices(matrix):
 # Establish a connection to your MySQL database
 # Database connection information
 DB_USERNAME = 'root'
-DB_PASSWORD = 'password'
+DB_PASSWORD = 'Acd2023='
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
-query = "SELECT hypergraph FROM hypergraphReduced WHERE sizeOfEdges = '[5, 2, 2, 2]';"
+query = "SELECT hypergraph from hypergraphReduced Where alpha = False;"
 
 # Folder containing your images
-folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/Temp'
+folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorithms/beta'
 
 # matrices = incidenceMatrices(getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query))
 
@@ -169,26 +168,19 @@ folder_path = '/Users/linneacaraballo/Documents/Algorithmic-Graph-Theory/Algorit
 
 hypergraphs = getHypergraphs(DB_USERNAME, DB_PASSWORD,DB_HOST, DB_NAME, query)
 
-# for i in range(len(hypergraphs)):
-#     print(hypergraphs[i])
-
-# print(hypergraphs)
-
-# incidenceMatrices(hypergraphs)
-
 # getPictures(hypergraphs)
 
 # createGrid(folder_path)
 
-# triangle = {
-#         'e2': [2,3],
-#         'e3': [2,4],
-#         'e4': [3,4]
-#     }
+df = pd.DataFrame()
+alpha = []
 
-# T = hnx.Hypergraph(triangle)
+checkHypergraphs = copy.deepcopy(hypergraphs)
 
-# print(T.is_connected())
+for i in range(len(checkHypergraphs)):
+    alpha.append(GYO(checkHypergraphs[i]))
 
-# print(T.incidence_matrix().toarray())
-             
+df['hypergraphs'] = hypergraphs
+df['alpha'] = alpha
+
+alpha_csv_data = df.to_csv('notAlpha.csv', index = True)
