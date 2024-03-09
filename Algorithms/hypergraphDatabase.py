@@ -11,7 +11,7 @@ import mysql.connector
 from collections import Counter
 from testGraphs import *
 from sqlalchemy import create_engine
-from betaAcyclic import checkBetaAcyclic
+from betaAcyclic import *
 from generateHypergraph import *
 from grahamsAlgorithm import GYO
 from checkIsomorphism import checkList
@@ -28,9 +28,9 @@ def connected(hypergraph):
 
 
 # Specify parameters to generate hypergraphs
-numVertices = 7
-numHyperedges = 4
-edgeSizes = [3,3,3,3]
+numVertices = 4
+numHyperedges = 6
+edgeSizes = [3,3,2,2,2,2]
 numbers = set(range(1,numVertices + 1))
 
 # Dataframe to hold hypergraph info
@@ -49,7 +49,7 @@ hypergraphs = [
 ]
 
 # Generate random hypergraphs
-for i in range(10000):
+for i in range(800):
     random_hypergraph = generate_random_hypergraph(numVertices, numHyperedges, edgeSizes)
     unique_items = set(item for sublist in random_hypergraph for item in sublist) # Get all unique vertices in the hypergraph
 
@@ -142,7 +142,7 @@ for i in range(len(listDict)):
     # Check acyclicity of hypergraph
     hypergraph = copy.deepcopy(checkHypergraphs[i])
     alpha.append(GYO(checkHypergraphs[i]))
-    checkBeta = checkBetaAcyclic(hypergraph)
+    checkBeta = check_beta_acyclic(hypergraph)
     beta.append(checkBeta)
 
     if checkBeta == True:
@@ -168,7 +168,7 @@ for i in range(len(listDict)):
     # Check acyclicity of the dual
     dualHypergraph = copy.deepcopy(D.incidence_dict)
     dualAlpha.append(GYO(D.incidence_dict))
-    dualBeta.append(checkBetaAcyclic(dualHypergraph))
+    dualBeta.append(check_beta_acyclic(dualHypergraph))
 
 # Add to dataframe
 df['hypergraph'] = listDict
@@ -205,7 +205,7 @@ df.to_csv('test.csv')
 
 # Database connection information
 DB_USERNAME = 'root'
-DB_PASSWORD = 'password'
+DB_PASSWORD = 'Acd2023='
 DB_HOST = 'localhost'
 DB_NAME = 'hypergraphs'
 
@@ -229,4 +229,4 @@ kDf.to_sql('kNEOReduced', con=engine, if_exists='append', index=False)
 conn.close()
 
 
-os.system('say "your program has finished"')
+# os.system('say "your program has finished"')
