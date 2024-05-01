@@ -1,4 +1,4 @@
-# Algorithmic-Graph-Theory
+# Algorithmic Graph Theory
 This repository is a collection of Jupyter Notebooks and Python code created throughout my masters degree. It highlights topics in graph theory and database theory, and their intersection. The main focus is on hypergraphs, specifically hypergraphs that are alpha-acyclic and beta-acyclic. The main question of my thesis is, how can we further evaluate and understand nest-set width which is a novel generalization of beta-acyclicity.
 
 # Table of Contents
