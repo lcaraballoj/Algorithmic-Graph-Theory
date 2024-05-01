@@ -35,3 +35,4 @@ This algorithm follows nest-point elimination orderings which is used to determi
 This code has hypergraphs that can be used for testing.
 
 # Jupyter Notebooks
+These Jupyter notebooks are a glimpse into some of the background information needed. It includes an introduction to graph theory, chordal graphs, and hypergraphs. There is also a notebook for examples, exampleHypergraphs.ipynb, and a notebook for diagrams used in my thesis, thesisDiagrams.ipynb. Images for graphs were created using Networkx and images of hypergraphs were created using Hypernetx. 
