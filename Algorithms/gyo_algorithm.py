@@ -23,7 +23,7 @@ def gyo(hypergraph):
         return gyo(hypergraph)
 
 def elimination(hypergraph):
-    # Elimination of vertices that are only in one hyperedge
+    # Elimination of vertices that exist in one hyperedge
     count = 0
 
     hyperedges = []
@@ -36,7 +36,7 @@ def elimination(hypergraph):
 
     
     for i in range(0, len(list_vertices)):
-        # Elimination of vertices that appear only in one edge
+        # Elimination of vertices that appear in one edge
         vertex = list_vertices[i]
         for edges, vertices in hypergraph.items():
             if vertex in vertices:

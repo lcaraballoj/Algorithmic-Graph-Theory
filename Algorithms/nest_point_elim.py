@@ -13,7 +13,7 @@ def check_beta_acyclic(hypergraph):
 
     find_nest_point(hypergraph)
 
-    # Keep repeating until you get the empty hypergraph or the hypergraph remains unchanged
+    # Keep repeating until you get the empty hypergraph or hypergraph remains unchanged
     if bool(hypergraph) == False:
         return True
     elif ORIGINAL == hypergraph:

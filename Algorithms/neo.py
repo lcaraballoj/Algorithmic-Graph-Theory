@@ -1,5 +1,5 @@
 # --------
-# Checks if a hypergraph has a nest-set elimination ordering of a specified size (So it can also check for beta acyclicity)
+# Check if a hypergraph has a nest-set elimination ordering of a specified size (So it can also be used to check for beta acyclicity)
 # --------
 
 import itertools, copy
@@ -50,14 +50,12 @@ def is_nest_set(list_sets, hyperedges):
         for edge in hyperedges:
             if any(i in edge for i in set) and edge not in I:
                 I.append(edge)
-        # print(I)
+                
         for vertex in set:
             IReduced = [[node for node in edge if node != vertex] for edge in I]
             I = IReduced
         if linearly_ordered(I):
             nestSets.append(set)
-
-    # print(nestSets)
 
     if not nestSets:
         return nestSets
@@ -65,7 +63,7 @@ def is_nest_set(list_sets, hyperedges):
         return nestSets[0]
 
 def linearly_ordered(list_sets):
-    # Checks if a list of sets is linearly ordered
+    # Check a list of sets to see if it is linearly ordered
     list_sets.sort(key = len)
     count = 0
     for i in range(len(list_sets)-1):
@@ -78,6 +76,7 @@ def linearly_ordered(list_sets):
         return False
         
 def remove_vertices(hypergraph, set_vertices):
+	# Remove vertices that are in a certain nest-set
     for vertex in set_vertices:
         for edges, vertices in hypergraph.items():
             if vertex in vertices:
